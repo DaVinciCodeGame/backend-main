@@ -1,9 +1,9 @@
-import express from 'express';
+import express, { Router } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from './middlewares/morgan';
-import apiRouter from './routes';
+import router from './app.router';
 import errorHandler from './middlewares/errorHandler';
 import logger from './config/logger';
 
@@ -22,7 +22,7 @@ class App {
     this.app.use(express.json());
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use(morgan);
-    this.app.use('/main', apiRouter);
+    this.app.use('/main', router);
     this.app.use(errorHandler);
   }
 
