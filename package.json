@@ -7,7 +7,8 @@
     "build": "tsc",
     "start": "pm2-docker start dist/server.js",
     "lint": "eslint '.src/** /*.{ts,tsx,js,jsx}'",
-    "lint:fix": "eslint --fix '.src/** /*.{ts,tsx,js,jsx}'"
+    "lint:fix": "eslint --fix '.src/** /*.{ts,tsx,js,jsx}'",
+    "typeorm": "typeorm-ts-node-commonjs"
   },
   "repository": {
     "type": "git",
@@ -24,6 +25,9 @@
     "express": "^4.18.2",
     "helmet": "^6.0.1",
     "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "0.3.11",
     "winston": "^3.8.2"
   },
   "devDependencies": {
@@ -46,6 +50,7 @@
     "prettier": "^2.8.2",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
-    "typescript": "^4.9.4"
+    "typescript": "^4.9.4",
+    "@types/node": "^16.11.10"
   }
 }
