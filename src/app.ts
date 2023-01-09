@@ -8,7 +8,7 @@ import errorHandler from './middlewares/errorHandler';
 import logger from './config/logger';
 
 class App {
-  private app;
+  private readonly app;
 
   constructor() {
     this.app = express();
