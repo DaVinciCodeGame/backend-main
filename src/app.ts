@@ -3,7 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from './middlewares/morgan';
-import router from './app.router';
+import router from './app.route';
 import errorHandler from './middlewares/errorHandler';
 import logger from './config/logger';
 
