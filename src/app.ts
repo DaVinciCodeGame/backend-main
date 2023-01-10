@@ -28,7 +28,7 @@ class App {
 
   public listen(port: number) {
     this.app.listen(port, () => {
-      logger.info(`${port} 포트로 서버가 열렸습니다.`);
+      logger.info(`${port} 포트에서 대기 중`);
     });
   }
 }
