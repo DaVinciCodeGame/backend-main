@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { DataSource } from 'typeorm';
+import { User } from '../entity/User';
 import env from './env';
 
 const dataSource = new DataSource({
@@ -11,7 +12,7 @@ const dataSource = new DataSource({
   database: env.RDS_DATABASE,
   synchronize: true,
   logging: false,
-  entities: [],
+  entities: [User],
   migrations: [],
   subscribers: [],
 });
