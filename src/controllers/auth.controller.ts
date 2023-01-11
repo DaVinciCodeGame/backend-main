@@ -1,5 +1,5 @@
 import { badRequest } from '@hapi/boom';
-import { NextFunction, Request, Response } from 'express';
+import { RequestHandler } from 'express';
 import env from '../config/env';
 import AuthService from '../services/auth.service';
 
@@ -12,11 +12,7 @@ export default class AuthController {
     this.authService = new AuthService();
   }
 
-  static getAuthenticationFromKakao(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  static getAuthenticationFromKakao: RequestHandler = (req, res, next) => {
     const { KAKAO_REST_API_KEY, KAKAO_REDIRECT_URI } = env;
 
     try {
@@ -26,9 +22,9 @@ export default class AuthController {
     } catch (err) {
       next(err);
     }
-  }
+  };
 
-  async authenticateWithKakao(req: Request, res: Response, next: NextFunction) {
+  authenticateWithKakao: RequestHandler = async (req, res, next) => {
     try {
       const { code, error } =
         await authenticateWithKakao.input.query.validateAsync(req.query);
@@ -45,5 +41,5 @@ export default class AuthController {
     } catch (err) {
       next(err);
     }
-  }
+  };
 }
