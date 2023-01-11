@@ -9,23 +9,25 @@ export type UserConstructorArguments = {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('increment')
-  readonly userId!: number;
+  readonly userId?: number;
 
   @Column({ length: 20, nullable: false })
-  username: string;
+  username?: string;
 
   @Column()
   profileImageUrl?: string;
 
   @Column({ default: 0 })
-  score!: number;
+  score?: number;
 
   @Column({ type: 'bigint' })
   kakaoId?: number;
 
   constructor(arg: UserConstructorArguments) {
-    this.username = arg.username;
-    this.kakaoId = arg.kakaoId;
-    this.profileImageUrl = arg.profileImageUrl;
+    if (arg) {
+      this.username = arg.username;
+      this.kakaoId = arg.kakaoId;
+      this.profileImageUrl = arg.profileImageUrl;
+    }
   }
 }
