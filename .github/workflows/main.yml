@@ -3,6 +3,11 @@ name: CI/CD
 on:
   push:
     branches: main
+    paths-ignore:
+      - '.eslintrc'
+      - '.prettierrc'
+      - 'README.md'
+      - 'License'
 
 env:
   AWS_REGION: ap-northeast-2
