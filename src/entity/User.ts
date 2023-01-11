@@ -1,6 +1,6 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
-type UserConstructorArguments = {
+export type UserConstructorArguments = {
   username: string;
   profileImageUrl?: string;
   kakaoId?: number;
