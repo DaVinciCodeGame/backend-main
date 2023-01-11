@@ -3,7 +3,6 @@
     "target": "ES2022",
     "lib": ["ES2022"],
     "module": "commonjs",
-    "baseUrl": "./src",
     "moduleResolution": "node",
     "outDir": "./dist",
     "removeComments": true,
@@ -13,8 +12,10 @@
     "strict": true,
     "skipLibCheck": true,
     "noErrorTruncation": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
-  "include": ["src", "server.ts"],
+  "include": ["src"],
   "exclude": ["node_modules"]
 }

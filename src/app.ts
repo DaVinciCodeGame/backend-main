@@ -1,14 +1,14 @@
-import express, { Router } from 'express';
+import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import morgan from './middlewares/morgan';
-import router from './app.router';
-import errorHandler from './middlewares/errorHandler';
+import router from './routes';
+import errorHandler from './middlewares/error-handler';
 import logger from './config/logger';
 
 class App {
-  private app;
+  private readonly app;
 
   constructor() {
     this.app = express();
@@ -26,9 +26,9 @@ class App {
     this.app.use(errorHandler);
   }
 
-  public listen(port: number) {
+  listen(port: number) {
     this.app.listen(port, () => {
-      logger.info(`${port} 포트로 서버가 열렸습니다.`);
+      logger.info(`${port} 포트에서 대기 중`);
     });
   }
 }

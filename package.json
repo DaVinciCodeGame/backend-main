@@ -7,7 +7,8 @@
     "build": "tsc",
     "start": "pm2-docker start dist/server.js",
     "lint": "eslint '.src/** /*.{ts,tsx,js,jsx}'",
-    "lint:fix": "eslint --fix '.src/** /*.{ts,tsx,js,jsx}'"
+    "lint:fix": "eslint --fix '.src/** /*.{ts,tsx,js,jsx}'",
+    "typeorm": "typeorm-ts-node-commonjs"
   },
   "repository": {
     "type": "git",
@@ -19,11 +20,18 @@
   },
   "homepage": "https://github.com/DaVinciCodeGame/backend-main#readme",
   "dependencies": {
+    "@hapi/boom": "^10.0.0",
+    "axios": "^1.2.2",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "helmet": "^6.0.1",
+    "joi": "^17.7.0",
+    "jsonwebtoken": "^9.0.0",
     "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
+    "reflect-metadata": "^0.1.13",
+    "typeorm": "0.3.11",
     "winston": "^3.8.2"
   },
   "devDependencies": {
@@ -31,7 +39,9 @@
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.15",
     "@types/jest": "^29.2.5",
+    "@types/jsonwebtoken": "^9.0.0",
     "@types/morgan": "^1.9.4",
+    "@types/node": "^16.11.10",
     "@types/winston": "^2.4.4",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
