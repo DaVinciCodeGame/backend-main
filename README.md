@@ -10,7 +10,7 @@
 
 코드 한 줄을 쓰더라도 글자 하나하나에 의미가 있어야 한다!!!
 
-## CI/CD를 통한 지속적 개발
+## CI/CD
 
 <details>
 <summary>Why?</summary>
