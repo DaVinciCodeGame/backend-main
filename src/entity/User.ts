@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 type UserConstructorArguments = {
   username: string;
   imageUrl?: string;
-  kakaoId: string;
+  kakaoId?: number;
 };
 
 @Entity()
@@ -20,8 +20,8 @@ export class User {
   @Column({ default: 0 })
   score!: number;
 
-  @Column()
-  kakaoId: string;
+  @Column({ type: 'bigint' })
+  kakaoId?: number;
 
   constructor(arg: UserConstructorArguments) {
     this.username = arg.username;
