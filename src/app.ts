@@ -26,7 +26,7 @@ class App {
     this.app.use(errorHandler);
   }
 
-  public listen(port: number) {
+  listen(port: number) {
     this.app.listen(port, () => {
       logger.info(`${port} 포트에서 대기 중`);
     });
