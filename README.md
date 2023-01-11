@@ -10,7 +10,7 @@
 
 코드 한 줄을 쓰더라도 글자 하나하나에 의미가 있어야 한다!!!
 
-## CI/CD를 통한 지속적 개발
+## CI/CD
 
 <details>
 <summary>Why?</summary>
@@ -48,6 +48,13 @@ Git Flow라는 전략도 사용해 봤지만 적은 인원으로 이뤄진 프�
 - URI: dash-case
 - 변수: camelCase, 명사
 - 함수: camelCase, 동사
+
+## 코딩 컨벤션
+
+- 클래스 멤버 순서:
+  1. 필드
+  2. 생성자
+  3. 메서드
 
 ## Git 커밋 컨벤션
 

@@ -9,7 +9,8 @@ const stream: morgan.StreamOptions = {
 };
 const skip = () => env.NODE_ENV !== 'development';
 
-export default morgan(env.NODE_ENV === 'production' ? 'combined' : 'dev', {
-  stream,
-  skip,
-});
+export default () =>
+  morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev', {
+    stream,
+    skip,
+  });
