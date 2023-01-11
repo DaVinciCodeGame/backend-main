@@ -2,20 +2,20 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 
 type UserConstructorArguments = {
   username: string;
-  imageUrl?: string;
+  profileImageUrl?: string;
   kakaoId?: number;
 };
 
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('increment')
-  userId!: number;
+  readonly userId!: number;
 
   @Column({ length: 20, nullable: false })
   username: string;
 
   @Column()
-  imageUrl?: string;
+  profileImageUrl?: string;
 
   @Column({ default: 0 })
   score!: number;
@@ -26,6 +26,6 @@ export class User {
   constructor(arg: UserConstructorArguments) {
     this.username = arg.username;
     this.kakaoId = arg.kakaoId;
-    this.imageUrl = arg.imageUrl;
+    this.profileImageUrl = arg.profileImageUrl;
   }
 }
