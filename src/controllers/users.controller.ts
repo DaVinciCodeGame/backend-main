@@ -1,6 +1,9 @@
 import { RequestHandler } from 'express';
 import UsersService from '../services/users.service';
-import { getMyInfoSchema } from '../validation/users.validation';
+import {
+  getMyInfoSchema,
+  updateUsernameSchema,
+} from '../validation/users.validation';
 
 export default class UsersController {
   usersService: UsersService;
@@ -30,6 +33,21 @@ export default class UsersController {
       const leaderboard = await this.usersService.getLeaderboard();
 
       res.status(200).json(leaderboard);
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  updateUsername: RequestHandler = async (req, res, next) => {
+    try {
+      const { username } = await updateUsernameSchema.input.body.validateAsync(
+        req.body
+      );
+      const { userId } = await updateUsernameSchema.input.locals.validateAsync(
+        res.locals
+      );
+
+      await this.usersService.updateUsername(userId, username);
     } catch (err) {
       next(err);
     }

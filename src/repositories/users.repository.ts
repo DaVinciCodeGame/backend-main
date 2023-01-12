@@ -21,4 +21,8 @@ export default class UsersRepository extends MySqlRepository<User> {
   find() {
     return this.repository.find();
   }
+
+  update(user: User, username: string) {
+    return this.repository.update(user.userId, { username });
+  }
 }

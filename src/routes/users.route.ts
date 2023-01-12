@@ -8,6 +8,7 @@ const usersController = new UsersController();
 
 usersRouter
   .get('/me', authorize, usersController.getMyInfo)
-  .get('/', usersController.getLeaderboard);
+  .get('/', usersController.getLeaderboard)
+  .put('/me', authorize, usersController.updateUsername);
 
 export default usersRouter;
