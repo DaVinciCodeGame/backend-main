@@ -3,7 +3,7 @@ import { RequestHandler } from 'express';
 import jwt from 'jsonwebtoken';
 import env from '../config/env';
 
-export const authorize: RequestHandler = async (req, res, next) => {
+const authorize: RequestHandler = async (req, res, next) => {
   const { accessToken } = req.cookies;
 
   try {
@@ -23,3 +23,5 @@ export const authorize: RequestHandler = async (req, res, next) => {
 
   next();
 };
+
+export default authorize;
