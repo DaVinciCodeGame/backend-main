@@ -28,7 +28,10 @@ export default class AuthController {
           sameSite: 'none',
         })
         .status(isFirstTime ? 201 : 200)
-        .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
+        .json({
+          message: isFirstTime ? '가입 완료' : '로그인 완료',
+          accessToken,
+        });
     } catch (err) {
       next(err);
     }
