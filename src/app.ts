@@ -6,6 +6,7 @@ import morgan from './middlewares/morgan';
 import router from './routes';
 import errorHandler from './middlewares/error-handler';
 import logger from './config/logger';
+import env from './config/env';
 
 class App {
   private readonly app;
@@ -16,7 +17,7 @@ class App {
   }
 
   private setMiddlewares() {
-    this.app.use(cors({ credentials: true, origin: 'https://localhost:3000' })); // TODO: 프론트앤드 서버 배포 후 해당 도메인에 연결하도록 설정
+    this.app.use(cors({ credentials: true, origin: env.FRONT_END_URI })); // TODO: 프론트앤드 서버 배포 후 해당 도메인에 연결하도록 설정
     this.app.use(helmet());
     this.app.use(compression());
     this.app.use(express.json());
