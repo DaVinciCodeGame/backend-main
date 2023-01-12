@@ -22,7 +22,11 @@ export default class AuthController {
       await authenticateWithKakao.output.cookie.validateAsync({ accessToken });
 
       res
-        .cookie('accessToken', accessToken, { httpOnly: true, secure: true })
+        .cookie('accessToken', accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'none',
+        })
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
     } catch (err) {
