@@ -24,4 +24,21 @@ export default class UsersService {
       rank: 0,
     };
   }
+
+  async getLeaderboard() {
+    const users = await this.usersRepository.find();
+
+    const leaderboard = users.map(({ username, profileImageUrl, score }) => {
+      return {
+        username,
+        profileImageUrl,
+        score,
+        ranking: 0,
+        change: 0,
+        rank: 0,
+      };
+    });
+
+    return leaderboard;
+  }
 }

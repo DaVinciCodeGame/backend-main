@@ -24,4 +24,14 @@ export default class UsersController {
       next(err);
     }
   };
+
+  getLeaderboard: RequestHandler = async (req, res, next) => {
+    try {
+      const leaderboard = await this.usersService.getLeaderboard();
+
+      res.status(200).json(leaderboard);
+    } catch (err) {
+      next(err);
+    }
+  };
 }

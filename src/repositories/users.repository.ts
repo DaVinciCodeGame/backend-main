@@ -17,4 +17,8 @@ export default class UsersRepository extends MySqlRepository<User> {
   findOneByUserId(userId: number) {
     return this.repository.findOne({ where: { userId } });
   }
+
+  find() {
+    return this.repository.find();
+  }
 }

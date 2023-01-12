@@ -5,6 +5,8 @@ const usersRouter = Router();
 
 const usersController = new UsersController();
 
-usersRouter.get('/me', usersController.getMyInfo);
+usersRouter
+  .get('/me', usersController.getMyInfo)
+  .get('/', usersController.getLeaderboard);
 
 export default usersRouter;
