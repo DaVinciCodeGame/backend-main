@@ -22,7 +22,7 @@ export default class AuthService {
     const { kakaoId, username, profileImageUrl } =
       await this.authRepository.getUserInfoFromKakao(kakaoAccessToken);
 
-    const existUser = await this.userRepository.findByKakaoId(kakaoId);
+    const existUser = await this.userRepository.findOneByKakaoId(kakaoId);
 
     if (existUser)
       return {

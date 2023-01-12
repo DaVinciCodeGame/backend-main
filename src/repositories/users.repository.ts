@@ -6,7 +6,7 @@ export default class UsersRepository extends MySqlRepository<User> {
     super(User);
   }
 
-  findByKakaoId(kakaoId: number) {
+  findOneByKakaoId(kakaoId: number) {
     return this.repository.findOne({ where: { kakaoId } });
   }
 
@@ -14,7 +14,7 @@ export default class UsersRepository extends MySqlRepository<User> {
     return this.repository.save(new User(userData));
   }
 
-  findByUserId(userId: number) {
+  findOneByUserId(userId: number) {
     return this.repository.findOne({ where: { userId } });
   }
 }
