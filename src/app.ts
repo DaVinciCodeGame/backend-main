@@ -14,11 +14,12 @@ class App {
 
   constructor() {
     this.app = express();
-    this.setMiddlewares();
-  }
-
-  private setMiddlewares() {
-    this.app.use(cors({ credentials: true, origin: env.FRONT_END_URI })); // TODO: 프론트앤드 서버 배포 후 해당 도메인에 연결하도록 설정
+    this.app.use(
+      cors({
+        credentials: true,
+        origin: [env.FRONT_END_URI, 'http://localhost:3000'], // NOTE: 프론트 배포 후 localhost 지울 것
+      })
+    );
     this.app.use(helmet());
     this.app.use(compression());
     this.app.use(cookieParser());
