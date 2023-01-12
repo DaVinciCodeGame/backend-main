@@ -1,6 +1,6 @@
 import Joi from 'joi';
 
-export const authenticateWithKakao = {
+export const authenticateWithKakaoSchema = {
   input: {
     query: Joi.object()
       .keys({

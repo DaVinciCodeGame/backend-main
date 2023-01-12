@@ -2,16 +2,16 @@ import jwt from 'jsonwebtoken';
 import env from '../config/env';
 
 import AuthRepository from '../repositories/auth.repository';
-import UserRepository from '../repositories/user.repository';
+import UsersRepository from '../repositories/users.repository';
 
 export default class AuthService {
   authRepository: AuthRepository;
 
-  userRepository: UserRepository;
+  userRepository: UsersRepository;
 
   constructor() {
     this.authRepository = new AuthRepository();
-    this.userRepository = new UserRepository();
+    this.userRepository = new UsersRepository();
   }
 
   async authenticateWithKakao(code: string) {
@@ -22,7 +22,7 @@ export default class AuthService {
     const { kakaoId, username, profileImageUrl } =
       await this.authRepository.getUserInfoFromKakao(kakaoAccessToken);
 
-    const existUser = await this.userRepository.findByKakaoId(kakaoId);
+    const existUser = await this.userRepository.findOneByKakaoId(kakaoId);
 
     if (existUser)
       return {

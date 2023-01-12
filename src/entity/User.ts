@@ -9,10 +9,10 @@ export type UserConstructorArguments = {
 @Entity()
 export class User {
   @PrimaryGeneratedColumn('increment')
-  readonly userId?: number;
+  readonly userId!: number;
 
   @Column({ length: 20, nullable: false })
-  username?: string;
+  username!: string;
 
   @Column()
   profileImageUrl?: string;
