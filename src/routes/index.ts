@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import authRouter from './auth.route';
-import userRouter from './users.route';
+import usersRouter from './users.route';
 
 const router = Router();
 
@@ -9,6 +9,6 @@ router
     res.status(200).json('ok');
   })
   .use('/auth', authRouter)
-  .use('/users', userRouter);
+  .use('/users', usersRouter);
 
 export default router;
