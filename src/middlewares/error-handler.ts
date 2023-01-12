@@ -2,8 +2,10 @@ import { ErrorRequestHandler } from 'express';
 import logger from '../config/logger';
 
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
-  const { stack } = err;
-  logger.error(stack);
+  logger.error(err.stack);
+
+  if (err.response) logger.error(err.response);
+  else if (err.request) logger.error(err.request);
 
   if (err.isBoom)
     res.status(err.output.statusCode).json({ errorMessage: err.message });
