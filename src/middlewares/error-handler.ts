@@ -4,8 +4,13 @@ import logger from '../config/logger';
 const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
   logger.error(err.stack);
 
-  if (err.response) logger.error(err.response);
-  else if (err.request) logger.error(err.request);
+  if (err.response) {
+    logger.error({
+      data: err.response.data,
+      status: err.response.status,
+      headers: err.response.headers,
+    });
+  } else if (err.request) logger.error(err.request);
 
   if (err.isBoom)
     res.status(err.output.statusCode).json({ errorMessage: err.message });
