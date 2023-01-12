@@ -25,9 +25,12 @@ export default class AuthService {
     const existUser = await this.userRepository.findByKakaoId(kakaoId);
 
     if (existUser)
-      return jwt.sign({ userId: existUser.userId }, env.JWT_SECRET, {
-        expiresIn: '1h',
-      });
+      return {
+        isFirstTime: false,
+        accessToken: jwt.sign({ userId: existUser.userId }, env.JWT_SECRET, {
+          expiresIn: '1h',
+        }),
+      };
 
     const newUser = await this.userRepository.create({
       kakaoId,
@@ -35,8 +38,11 @@ export default class AuthService {
       profileImageUrl,
     });
 
-    return jwt.sign({ userId: newUser.userId }, env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    return {
+      isFirstTime: true,
+      accessToken: jwt.sign({ userId: newUser.userId }, env.JWT_SECRET, {
+        expiresIn: '1h',
+      }),
+    };
   }
 }

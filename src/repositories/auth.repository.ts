@@ -1,10 +1,14 @@
 import env from '../config/env';
 import AjaxRepository from '../libs/ajax-repository';
 
-type kakaoUserInfo = {
-  kakaoId: number;
-  username: string;
-  profileImageUrl: string;
+type KakaoUserInfo = {
+  id: number;
+  kakao_account: {
+    profile: {
+      nickname: string;
+      thumbnail_image_url: string;
+    };
+  };
 };
 
 export default class AuthRepository extends AjaxRepository {
@@ -23,19 +27,21 @@ export default class AuthRepository extends AjaxRepository {
     return accessToken;
   }
 
-  async getUserInfoFromKakao(accessToken: string): Promise<kakaoUserInfo> {
+  async getUserInfoFromKakao(accessToken: string) {
     const {
       data: {
         id: kakaoId,
         kakao_account: {
-          nickname: username,
-          profile_image_url: profileImageUrl,
+          profile: { nickname: username, thumbnail_image_url: profileImageUrl },
         },
       },
-    } = await this.get('https://kapi.kakao.com/v2/user/me', {
-      headers: { Authorization: `Bearer ${accessToken}` },
-      params: { secure_resource: true, property_keys: [] },
-    });
+    }: { data: KakaoUserInfo } = await this.get(
+      'https://kapi.kakao.com/v2/user/me',
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: { secure_resource: true, property_keys: [] },
+      }
+    );
 
     return { kakaoId, username, profileImageUrl };
   }

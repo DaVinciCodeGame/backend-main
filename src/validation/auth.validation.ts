@@ -4,8 +4,7 @@ export const authenticateWithKakao = {
   input: {
     query: Joi.object()
       .keys({
-        code: Joi.string().description('인가 코드'),
-        error: Joi.string().description('에러 코드'),
+        code: Joi.string().required().description('인가 코드'),
       })
       .required(),
   },
