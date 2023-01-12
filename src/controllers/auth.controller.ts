@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import AuthService from '../services/auth.service';
 
-import { authenticateWithKakao } from '../validation/auth.validation';
+import { authenticateWithKakaoSchema } from '../validation/auth.validation';
 
 export default class AuthController {
   authService: AuthService;
@@ -12,14 +12,15 @@ export default class AuthController {
 
   authenticateWithKakao: RequestHandler = async (req, res, next) => {
     try {
-      const { code } = await authenticateWithKakao.input.query.validateAsync(
-        req.query
-      );
+      const { code } =
+        await authenticateWithKakaoSchema.input.query.validateAsync(req.query);
 
       const { isFirstTime, accessToken } =
         await this.authService.authenticateWithKakao(code);
 
-      await authenticateWithKakao.output.cookie.validateAsync({ accessToken });
+      await authenticateWithKakaoSchema.output.cookie.validateAsync({
+        accessToken,
+      });
 
       res
         .cookie('accessToken', accessToken, {
