@@ -1,7 +1,7 @@
 import { User, UserConstructorArguments } from '../entity/User';
 import MySqlRepository from '../libs/my-sql-repository';
 
-export default class UserRepository extends MySqlRepository<User> {
+export default class UsersRepository extends MySqlRepository<User> {
   constructor() {
     super(User);
   }
@@ -12,5 +12,9 @@ export default class UserRepository extends MySqlRepository<User> {
 
   create(userData: UserConstructorArguments) {
     return this.repository.save(new User(userData));
+  }
+
+  findByUserId(userId: number) {
+    return this.repository.findOne({ where: { userId } });
   }
 }
