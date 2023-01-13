@@ -5,6 +5,7 @@ export const authenticateWithKakaoSchema = {
     query: Joi.object()
       .keys({
         code: Joi.string().required().description('인가 코드'),
+        'redirect-uri': Joi.string().required().description('리다이렉트 URI'),
       })
       .required(),
   },

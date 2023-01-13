@@ -12,14 +12,14 @@ type KakaoUserInfo = {
 };
 
 export default class AuthRepository extends AjaxRepository {
-  async getAccessTokenFromKakao(code: string) {
+  async getAccessTokenFromKakao(code: string, redirectUri: string) {
     const {
       data: { access_token: accessToken },
     } = await this.post('https://kauth.kakao.com/oauth/token', null, {
       params: {
         grant_type: 'authorization_code',
         client_id: env.KAKAO_REST_API_KEY,
-        redirect_uri: env.KAKAO_REDIRECT_URI,
+        redirect_uri: redirectUri,
         code,
       },
     });
