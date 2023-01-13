@@ -12,6 +12,8 @@ const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
     });
   } else if (err.request) logger.error(err.request);
 
+  if (err.isBoom) logger.error(err.data);
+
   if (err.isBoom)
     res.status(err.output.statusCode).json({ errorMessage: err.message });
   else if (err.isJoi) res.status(400).json({ errorMessage: err.message });

@@ -7,18 +7,28 @@ const authorize: RequestHandler = async (req, res, next) => {
   const { accessToken } = req.cookies;
 
   try {
-    if (!accessToken) throw new Error();
+    if (!accessToken)
+      throw badRequest('인증 정보가 유효하지 않습니다.', '쿠키 없음');
 
-    const payload = jwt.verify(accessToken, env.JWT_SECRET);
+    let payload;
+
+    try {
+      payload = jwt.verify(accessToken, env.JWT_SECRET);
+    } catch (err) {
+      throw badRequest('인증 정보가 유효하지 않습니다.', '유효하지 않은 토큰');
+    }
 
     if (typeof payload === 'string' || typeof payload.userId !== 'string')
-      throw new Error();
+      throw badRequest(
+        '인증 정보가 유효하지 않습니다.',
+        '내용이 유효하지 않음'
+      );
 
     res.locals.userId = Number(payload.userId);
 
     next();
-  } catch {
-    next(badRequest('인증 정보가 유효하지 않습니다.'));
+  } catch (err) {
+    next(err);
   }
 
   next();
