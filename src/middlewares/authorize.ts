@@ -30,8 +30,6 @@ const authorize: RequestHandler = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
-
-  next();
 };
 
 export default authorize;
