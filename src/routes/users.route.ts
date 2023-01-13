@@ -9,6 +9,6 @@ const usersController = new UsersController();
 usersRouter
   .get('/me', authorize, usersController.getMyInfo)
   .get('/', usersController.getLeaderboard)
-  .put('/me', authorize, usersController.updateUsername);
+  .put('/me', authorize, usersController.updateProfile);
 
 export default usersRouter;

@@ -38,7 +38,7 @@ export default class UsersController {
     }
   };
 
-  updateUsername: RequestHandler = async (req, res, next) => {
+  updateProfile: RequestHandler = async (req, res, next) => {
     try {
       const { username } = await updateUsernameSchema.input.body.validateAsync(
         req.body
@@ -47,7 +47,7 @@ export default class UsersController {
         res.locals
       );
 
-      await this.usersService.updateUsername(userId, username);
+      await this.usersService.updateProfile(userId, username);
     } catch (err) {
       next(err);
     }
