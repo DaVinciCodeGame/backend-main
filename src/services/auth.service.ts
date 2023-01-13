@@ -14,9 +14,10 @@ export default class AuthService {
     this.userRepository = new UsersRepository();
   }
 
-  async authenticateWithKakao(code: string) {
+  async authenticateWithKakao(code: string, redirectUri: string) {
     const kakaoAccessToken = await this.authRepository.getAccessTokenFromKakao(
-      code
+      code,
+      redirectUri
     );
 
     const { kakaoId, username, profileImageUrl } =

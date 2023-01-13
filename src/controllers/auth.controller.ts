@@ -12,11 +12,11 @@ export default class AuthController {
 
   authenticateWithKakao: RequestHandler = async (req, res, next) => {
     try {
-      const { code } =
+      const { code, 'redirect-uri': redirectUri } =
         await authenticateWithKakaoSchema.input.query.validateAsync(req.query);
 
       const { isFirstTime, accessToken } =
-        await this.authService.authenticateWithKakao(code);
+        await this.authService.authenticateWithKakao(code, redirectUri);
 
       await authenticateWithKakaoSchema.output.cookie.validateAsync({
         accessToken,

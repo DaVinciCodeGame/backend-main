@@ -17,7 +17,10 @@ class App {
     this.app.use(
       cors({
         credentials: true,
-        origin: [env.FRONT_END_URI, 'http://localhost:3000'], // NOTE: 프론트 배포 후 localhost 지울 것
+        origin: [
+          'https://frontend-delta-puce.vercel.app',
+          'http://localhost:3000',
+        ],
       })
     );
     this.app.use(helmet());
