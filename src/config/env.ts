@@ -10,7 +10,6 @@ type Env = {
   RDS_DATABASE: string;
   KAKAO_REST_API_KEY: string;
   JWT_SECRET: string;
-  FRONT_END_URI: string;
 };
 
 const { value: env, error } = Joi.object<Env>()
@@ -24,7 +23,6 @@ const { value: env, error } = Joi.object<Env>()
     RDS_DATABASE: Joi.string(),
     KAKAO_REST_API_KEY: Joi.string(),
     JWT_SECRET: Joi.string(),
-    FRONT_END_URI: Joi.string(),
   })
   .unknown()
   .validate(process.env);
