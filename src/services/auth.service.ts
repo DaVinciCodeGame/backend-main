@@ -1,17 +1,22 @@
+import axios from 'axios';
 import jwt from 'jsonwebtoken';
 import env from '../config/env';
 
 import AuthRepository from '../repositories/auth.repository';
 import UsersMySqlRepository from '../repositories/users.my-sql-repository';
+import UsersS3Repository from '../repositories/users.s3-repository';
 
 export default class AuthService {
   authRepository: AuthRepository;
 
-  userMySqlRepository: UsersMySqlRepository;
+  usersMySqlRepository: UsersMySqlRepository;
+
+  usersS3Repository: UsersS3Repository;
 
   constructor() {
     this.authRepository = new AuthRepository();
-    this.userMySqlRepository = new UsersMySqlRepository();
+    this.usersMySqlRepository = new UsersMySqlRepository();
+    this.usersS3Repository = new UsersS3Repository();
   }
 
   async authenticateWithKakao(code: string, redirectUri: string) {
@@ -20,10 +25,10 @@ export default class AuthService {
       redirectUri
     );
 
-    const { kakaoId, username, profileImageUrl } =
+    const { kakaoId, username, kakaoProfileImage } =
       await this.authRepository.getUserInfoFromKakao(kakaoAccessToken);
 
-    const existUser = await this.userMySqlRepository.findOneByKakaoId(kakaoId);
+    const existUser = await this.usersMySqlRepository.findOneByKakaoId(kakaoId);
 
     if (existUser)
       return {
@@ -33,7 +38,15 @@ export default class AuthService {
         }),
       };
 
-    const newUser = await this.userMySqlRepository.create({
+    const { data } = await axios.get(kakaoProfileImage, {
+      responseType: 'arraybuffer',
+    });
+
+    const profileImageUrl = await this.usersS3Repository.putProfileImage(
+      Buffer.from(data)
+    );
+
+    const newUser = await this.usersMySqlRepository.create({
       kakaoId,
       username,
       profileImageUrl,

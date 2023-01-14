@@ -32,7 +32,10 @@ export default class AuthRepository extends AjaxRepository {
       data: {
         id: kakaoId,
         kakao_account: {
-          profile: { nickname: username, thumbnail_image_url: profileImageUrl },
+          profile: {
+            nickname: username,
+            thumbnail_image_url: kakaoProfileImage,
+          },
         },
       },
     }: { data: KakaoUserInfo } = await this.get(
@@ -43,6 +46,6 @@ export default class AuthRepository extends AjaxRepository {
       }
     );
 
-    return { kakaoId, username, profileImageUrl };
+    return { kakaoId, username, kakaoProfileImage };
   }
 }
