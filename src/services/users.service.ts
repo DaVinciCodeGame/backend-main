@@ -1,12 +1,13 @@
 import { badRequest } from '@hapi/boom';
+import { UpdateResult } from 'typeorm';
 
-import UsersRepository from '../repositories/users.repository';
+import UsersMySqlRepository from '../repositories/users.my-sql-repository';
 
 export default class UsersService {
-  usersRepository: UsersRepository;
+  usersRepository: UsersMySqlRepository;
 
   constructor() {
-    this.usersRepository = new UsersRepository();
+    this.usersRepository = new UsersMySqlRepository();
   }
 
   async getMyInfo(userId: number) {
@@ -42,11 +43,21 @@ export default class UsersService {
     return leaderboard;
   }
 
-  async updateProfile(userId: number, username: string) {
+  async updateProfile(userId: number, username: string, image: Buffer) {
     const user = await this.usersRepository.findOneByUserId(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
-    return this.usersRepository.update(user, username);
+    const queries: Promise<UpdateResult | any>[] = [];
+
+    if (username) queries.push(this.usersRepository.update(user, username));
+    if (image)
+      queries.push(
+        new Promise((resolve) => {
+          resolve({});
+        })
+      );
+
+    return Promise.all(queries);
   }
 }

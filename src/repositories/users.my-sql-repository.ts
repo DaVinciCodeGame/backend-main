@@ -1,7 +1,7 @@
 import { User, UserConstructorArguments } from '../entity/User';
 import MySqlRepository from '../libs/my-sql-repository';
 
-export default class UsersRepository extends MySqlRepository<User> {
+export default class UsersMySqlRepository extends MySqlRepository<User> {
   constructor() {
     super(User);
   }
