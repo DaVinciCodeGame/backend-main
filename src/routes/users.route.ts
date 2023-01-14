@@ -11,13 +11,9 @@ const usersController = new UsersController();
 usersRouter
   .get('/me', authorize, usersController.getMyInfo)
   .get('/', usersController.getLeaderboard)
-  .put('/me', authorize, usersController.updateProfile)
-  .post(
-    '/test',
-    (req, res, next) => {
-      res.locals.userId = 1;
-      next();
-    },
+  .put(
+    '/me',
+    authorize,
     multipartParser({ fileSize: 10 * 1024 * 1024 }).single('image'),
     imageResizer(110),
     usersController.updateProfile
