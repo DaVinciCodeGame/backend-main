@@ -18,6 +18,7 @@ export const getMyInfoSchema = {
     }),
   },
 };
+
 export const updateUsernameSchema = {
   input: {
     body: Joi.object().keys({
@@ -26,6 +27,14 @@ export const updateUsernameSchema = {
     locals: Joi.object().keys({
       userId: Joi.number().required().description('유저 식별자'),
       resizedImage: Joi.binary().description('프로필 사진'),
+    }),
+  },
+};
+
+export const unregisterSchema = {
+  input: {
+    locals: Joi.object().keys({
+      userId: Joi.number().required().description('유저 식별자'),
     }),
   },
 };

@@ -17,6 +17,7 @@ usersRouter
     multipartParser({ fileSize: 10 * 1024 * 1024 }).single('image'),
     imageResizer(110),
     usersController.updateProfile
-  );
+  )
+  .delete('/me', authorize, usersController.unregister);
 
 export default usersRouter;
