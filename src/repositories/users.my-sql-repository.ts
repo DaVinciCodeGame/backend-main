@@ -22,7 +22,11 @@ export default class UsersMySqlRepository extends MySqlRepository<User> {
     return this.repository.find();
   }
 
-  update(user: User, username: string) {
+  updateUsername(user: User, username: string) {
     return this.repository.update(user.userId, { username });
+  }
+
+  updateProfileImageUrl(user: User, profileImageUrl: string) {
+    return this.repository.update(user.userId, { profileImageUrl });
   }
 }
