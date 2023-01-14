@@ -13,6 +13,10 @@ usersRouter
   .put('/me', authorize, usersController.updateProfile)
   .post(
     '/test',
+    (req, res, next) => {
+      res.locals.userId = 1;
+      next();
+    },
     multipartParser({ fileSize: 10 * 1024 * 1024 }).single('image'),
     usersController.updateProfile
   );
