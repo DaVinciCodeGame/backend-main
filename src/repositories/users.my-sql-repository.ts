@@ -29,4 +29,8 @@ export default class UsersMySqlRepository extends MySqlRepository<User> {
   updateProfileImageUrl(user: User, profileImageUrl: string) {
     return this.repository.update(user.userId, { profileImageUrl });
   }
+
+  delete(user: User) {
+    return this.repository.delete(user);
+  }
 }

@@ -63,4 +63,12 @@ export default class UsersService {
         await this.usersS3Repository.deleteObjectByUrl(prevImageUrl);
     }
   }
+
+  async unregister(userId: number) {
+    const user = await this.usersMySqlRepository.findOneByUserId(userId);
+
+    if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
+
+    return this.usersMySqlRepository.delete(user);
+  }
 }
