@@ -2,16 +2,16 @@ import jwt from 'jsonwebtoken';
 import env from '../config/env';
 
 import AuthRepository from '../repositories/auth.repository';
-import UsersRepository from '../repositories/users.repository';
+import UsersMySqlRepository from '../repositories/users.my-sql-repository';
 
 export default class AuthService {
   authRepository: AuthRepository;
 
-  userRepository: UsersRepository;
+  userMySqlRepository: UsersMySqlRepository;
 
   constructor() {
     this.authRepository = new AuthRepository();
-    this.userRepository = new UsersRepository();
+    this.userMySqlRepository = new UsersMySqlRepository();
   }
 
   async authenticateWithKakao(code: string, redirectUri: string) {
@@ -23,7 +23,7 @@ export default class AuthService {
     const { kakaoId, username, profileImageUrl } =
       await this.authRepository.getUserInfoFromKakao(kakaoAccessToken);
 
-    const existUser = await this.userRepository.findOneByKakaoId(kakaoId);
+    const existUser = await this.userMySqlRepository.findOneByKakaoId(kakaoId);
 
     if (existUser)
       return {
@@ -33,7 +33,7 @@ export default class AuthService {
         }),
       };
 
-    const newUser = await this.userRepository.create({
+    const newUser = await this.userMySqlRepository.create({
       kakaoId,
       username,
       profileImageUrl,

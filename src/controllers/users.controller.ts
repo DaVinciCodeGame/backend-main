@@ -1,4 +1,5 @@
 import { RequestHandler } from 'express';
+
 import UsersService from '../services/users.service';
 import {
   getMyInfoSchema,
@@ -38,16 +39,18 @@ export default class UsersController {
     }
   };
 
-  updateUsername: RequestHandler = async (req, res, next) => {
+  updateProfile: RequestHandler = async (req, res, next) => {
     try {
-      const { username } = await updateUsernameSchema.input.body.validateAsync(
-        req.body
-      );
-      const { userId } = await updateUsernameSchema.input.locals.validateAsync(
-        res.locals
+      const [{ username }, { userId, resizedImage: image }] = await Promise.all(
+        [
+          updateUsernameSchema.input.body.validateAsync(req.body),
+          updateUsernameSchema.input.locals.validateAsync(res.locals),
+        ]
       );
 
-      await this.usersService.updateUsername(userId, username);
+      await this.usersService.updateProfile(userId, username, image);
+
+      res.status(204).send();
     } catch (err) {
       next(err);
     }

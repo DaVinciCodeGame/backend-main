@@ -21,10 +21,11 @@ export const getMyInfoSchema = {
 export const updateUsernameSchema = {
   input: {
     body: Joi.object().keys({
-      username: Joi.string().min(1).required().description('사용자명'),
+      username: Joi.string().min(1).description('사용자명'),
     }),
     locals: Joi.object().keys({
       userId: Joi.number().required().description('유저 식별자'),
+      resizedImage: Joi.binary().description('프로필 사진'),
     }),
   },
 };

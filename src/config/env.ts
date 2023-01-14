@@ -10,6 +10,8 @@ type Env = {
   RDS_DATABASE: string;
   KAKAO_REST_API_KEY: string;
   JWT_SECRET: string;
+  AWS_S3_ACCESS_KEY_ID: string;
+  AWS_S3_SECRET_ACCESS_KEY: string;
 };
 
 const { value: env, error } = Joi.object<Env>()
@@ -23,6 +25,8 @@ const { value: env, error } = Joi.object<Env>()
     RDS_DATABASE: Joi.string(),
     KAKAO_REST_API_KEY: Joi.string(),
     JWT_SECRET: Joi.string(),
+    AWS_S3_ACCESS_KEY_ID: Joi.string(),
+    AWS_S3_SECRET_ACCESS_KEY: Joi.string(),
   })
   .unknown()
   .validate(process.env);

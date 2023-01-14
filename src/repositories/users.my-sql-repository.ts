@@ -1,7 +1,7 @@
 import { User, UserConstructorArguments } from '../entity/User';
 import MySqlRepository from '../libs/my-sql-repository';
 
-export default class UsersRepository extends MySqlRepository<User> {
+export default class UsersMySqlRepository extends MySqlRepository<User> {
   constructor() {
     super(User);
   }
@@ -22,7 +22,11 @@ export default class UsersRepository extends MySqlRepository<User> {
     return this.repository.find();
   }
 
-  update(user: User, username: string) {
+  updateUsername(user: User, username: string) {
     return this.repository.update(user.userId, { username });
+  }
+
+  updateProfileImageUrl(user: User, profileImageUrl: string) {
+    return this.repository.update(user.userId, { profileImageUrl });
   }
 }
