@@ -42,7 +42,7 @@ Git Flow라는 전략도 사용해 봤지만 적은 인원으로 이뤄진 프�
 - 파일: 접미사를 제외한 나머지는 dash-case, ex: auth.service.ts
 - 인터페이스: PascalCase
 - 클래스: PascalCase
-- 타입: camelCase
+- 타입: PascalCase
 - 인스턴스: 클래스 이름을 camelCase로 치환
 - 모델: PascalCase
 - URI: dash-case
@@ -101,4 +101,4 @@ Git Flow라는 전략도 사용해 봤지만 적은 인원으로 이뤄진 프�
 
 # 기술 스택
 
-<img src="https://img.shields.io/static/v1?label=&color=3178C6&message=TypeScript&logo=TypeScript&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=339933&message=Node.js&logo=Node.js&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=000000&message=Express&logo=Express&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=009639&message=NGINX&logo=NGINX&style=flat-square&logoColor=ffffff">
+<img src="https://img.shields.io/static/v1?label=&color=3178C6&message=TypeScript&logo=TypeScript&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=339933&message=Node.js&logo=Node.js&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=000000&message=Express&logo=Express&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=%23010101&message=Socket.io&logo=Socket.io&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=%23DC382D&message=Redis&logo=Redis&style=flat-square&logoColor=ffffff"> <img src=""> <img src="https://img.shields.io/static/v1?label=&color=%234479A1&message=MySQL&logo=MySQL&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=%23000000&message=JSON Web Tokens&logo=JSON Web Tokens&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=%235A29E4&message=Axios&logo=Axios&style=flat-square&logoColor=ffffff">
