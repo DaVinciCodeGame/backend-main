@@ -1,4 +1,4 @@
-import dataSource from './config/typeorm';
+import dataSource from './config/mongodb';
 import App from './app';
 import logger from './config/logger';
 import env from './config/env';
