@@ -26,7 +26,6 @@ export const updateUsernameSchema = {
     }),
     locals: Joi.object().keys({
       userId: Joi.number().required().description('유저 식별자'),
-      resizedImage: Joi.binary().description('프로필 사진'),
     }),
   },
 };
