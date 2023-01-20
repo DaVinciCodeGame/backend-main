@@ -1,34 +1,54 @@
-import axios from 'axios';
 import jwt from 'jsonwebtoken';
+import axios from 'axios';
 import env from '../config/env';
 
-import AuthRepository from '../repositories/auth.repository';
 import UsersRepository from '../repositories/users.repository';
-import UsersS3Repository from '../repositories/users.s3-repository';
+
+type KakaoUserInfo = {
+  id: number;
+  kakao_account: {
+    profile: {
+      nickname: string;
+      thumbnail_image_url: string;
+    };
+  };
+};
 
 export default class AuthService {
-  authRepository: AuthRepository;
-
-  usersMySqlRepository: UsersRepository;
-
-  usersS3Repository: UsersS3Repository;
+  usersRepository: UsersRepository;
 
   constructor() {
-    this.authRepository = new AuthRepository();
-    this.usersMySqlRepository = new UsersRepository();
-    this.usersS3Repository = new UsersS3Repository();
+    this.usersRepository = new UsersRepository();
   }
 
   async authenticateWithKakao(code: string, redirectUri: string) {
-    const kakaoAccessToken = await this.authRepository.getAccessTokenFromKakao(
-      code,
-      redirectUri
+    const {
+      data: { access_token: accessToken },
+    } = await axios.post('https://kauth.kakao.com/oauth/token', null, {
+      params: {
+        grant_type: 'authorization_code',
+        client_id: env.KAKAO_REST_API_KEY,
+        redirect_uri: redirectUri,
+        code,
+      },
+    });
+
+    const {
+      data: {
+        id: kakaoId,
+        kakao_account: {
+          profile: { nickname: username, thumbnail_image_url: profileImageUrl },
+        },
+      },
+    }: { data: KakaoUserInfo } = await axios.get(
+      'https://kapi.kakao.com/v2/user/me',
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+        params: { secure_resource: true, property_keys: [] },
+      }
     );
 
-    const { kakaoId, username, profileImageUrl } =
-      await this.authRepository.getUserInfoFromKakao(kakaoAccessToken);
-
-    const existUser = await this.usersMySqlRepository.findOneByKakaoId(kakaoId);
+    const existUser = await this.usersRepository.findOneByKakaoId(kakaoId);
 
     if (existUser)
       return {
@@ -38,7 +58,7 @@ export default class AuthService {
         }),
       };
 
-    const newUser = await this.usersMySqlRepository.create({
+    const newUser = await this.usersRepository.create({
       kakaoId,
       username,
       profileImageUrl,

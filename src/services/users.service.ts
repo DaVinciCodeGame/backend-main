@@ -1,19 +1,15 @@
 import { badRequest } from '@hapi/boom';
 import UsersRepository from '../repositories/users.repository';
-import S3Repository from '../repositories/users.s3-repository';
 
 export default class UsersService {
-  usersMySqlRepository: UsersRepository;
-
-  usersS3Repository: S3Repository;
+  usersRepository: UsersRepository;
 
   constructor() {
-    this.usersMySqlRepository = new UsersRepository();
-    this.usersS3Repository = new S3Repository();
+    this.usersRepository = new UsersRepository();
   }
 
   async getMyInfo(userId: number) {
-    const user = await this.usersMySqlRepository.findOneByUserId(userId);
+    const user = await this.usersRepository.findOneByUserId(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
@@ -29,7 +25,7 @@ export default class UsersService {
   }
 
   async getLeaderboard() {
-    const users = await this.usersMySqlRepository.findAll();
+    const users = await this.usersRepository.findAll();
 
     const leaderboard = users.map(({ username, profileImageUrl, score }) => {
       return {
@@ -45,30 +41,19 @@ export default class UsersService {
     return leaderboard;
   }
 
-  async updateProfile(userId: number, username: string, image: Buffer) {
-    const user = await this.usersMySqlRepository.findOneByUserId(userId);
+  async updateProfile(userId: number, username: string) {
+    const user = await this.usersRepository.findOneByUserId(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
-    if (username)
-      await this.usersMySqlRepository.updateUsername(user, username);
-
-    if (image) {
-      const prevImageUrl = user.profileImageUrl;
-
-      const newImageUrl = await this.usersS3Repository.putProfileImage(image);
-      await this.usersMySqlRepository.updateProfileImageUrl(user, newImageUrl);
-
-      if (prevImageUrl)
-        await this.usersS3Repository.deleteObjectByUrl(prevImageUrl);
-    }
+    if (username) await this.usersRepository.updateUsername(user, username);
   }
 
   async unregister(userId: number) {
-    const user = await this.usersMySqlRepository.findOneByUserId(userId);
+    const user = await this.usersRepository.findOneByUserId(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
-    return this.usersMySqlRepository.delete(user);
+    return this.usersRepository.delete(user);
   }
 }
