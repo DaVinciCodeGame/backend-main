@@ -1,7 +1,7 @@
 import { User, UserConstructorArguments } from '../entity/User';
-import MySqlRepository from '../libs/my-sql-repository';
+import Repository from '../libs/base-repository';
 
-export default class UsersMySqlRepository extends MySqlRepository<User> {
+export default class UsersRepository extends Repository<User> {
   constructor() {
     super(User);
   }
@@ -18,7 +18,7 @@ export default class UsersMySqlRepository extends MySqlRepository<User> {
     return this.repository.findOne({ where: { userId } });
   }
 
-  find() {
+  findAll() {
     return this.repository.find();
   }
 

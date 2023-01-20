@@ -1,14 +1,14 @@
 import { badRequest } from '@hapi/boom';
-import UsersMySqlRepository from '../repositories/users.my-sql-repository';
+import UsersRepository from '../repositories/users.repository';
 import S3Repository from '../repositories/users.s3-repository';
 
 export default class UsersService {
-  usersMySqlRepository: UsersMySqlRepository;
+  usersMySqlRepository: UsersRepository;
 
   usersS3Repository: S3Repository;
 
   constructor() {
-    this.usersMySqlRepository = new UsersMySqlRepository();
+    this.usersMySqlRepository = new UsersRepository();
     this.usersS3Repository = new S3Repository();
   }
 
@@ -29,7 +29,7 @@ export default class UsersService {
   }
 
   async getLeaderboard() {
-    const users = await this.usersMySqlRepository.find();
+    const users = await this.usersMySqlRepository.findAll();
 
     const leaderboard = users.map(({ username, profileImageUrl, score }) => {
       return {

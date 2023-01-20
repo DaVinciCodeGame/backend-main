@@ -3,19 +3,19 @@ import jwt from 'jsonwebtoken';
 import env from '../config/env';
 
 import AuthRepository from '../repositories/auth.repository';
-import UsersMySqlRepository from '../repositories/users.my-sql-repository';
+import UsersRepository from '../repositories/users.repository';
 import UsersS3Repository from '../repositories/users.s3-repository';
 
 export default class AuthService {
   authRepository: AuthRepository;
 
-  usersMySqlRepository: UsersMySqlRepository;
+  usersMySqlRepository: UsersRepository;
 
   usersS3Repository: UsersS3Repository;
 
   constructor() {
     this.authRepository = new AuthRepository();
-    this.usersMySqlRepository = new UsersMySqlRepository();
+    this.usersMySqlRepository = new UsersRepository();
     this.usersS3Repository = new UsersS3Repository();
   }
 

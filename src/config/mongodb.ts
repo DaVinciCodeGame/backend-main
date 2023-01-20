@@ -5,14 +5,11 @@ import env from './env';
 
 const dataSource = new DataSource({
   type: 'mongodb',
-  host: env.MONGO_HOST,
-  port: Number(env.MONGO_PORT),
-  database: env.MONGO_DATABASE,
+  url: env.MONGO_URL,
   synchronize: true,
   logging: false,
   entities: [User],
-  migrations: [],
-  subscribers: [],
+  useUnifiedTopology: true,
 });
 
 export default dataSource;
