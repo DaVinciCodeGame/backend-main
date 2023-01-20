@@ -25,7 +25,7 @@ export default class AuthService {
       redirectUri
     );
 
-    const { kakaoId, username, kakaoProfileImage } =
+    const { kakaoId, username, profileImageUrl } =
       await this.authRepository.getUserInfoFromKakao(kakaoAccessToken);
 
     const existUser = await this.usersMySqlRepository.findOneByKakaoId(kakaoId);
@@ -37,14 +37,6 @@ export default class AuthService {
           expiresIn: '1h',
         }),
       };
-
-    const { data } = await axios.get(kakaoProfileImage, {
-      responseType: 'arraybuffer',
-    });
-
-    const profileImageUrl = await this.usersS3Repository.putProfileImage(
-      Buffer.from(data)
-    );
 
     const newUser = await this.usersMySqlRepository.create({
       kakaoId,
