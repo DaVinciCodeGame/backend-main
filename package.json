@@ -2,7 +2,6 @@
   "name": "backend-main",
   "version": "1.0.0",
   "scripts": {
-    "test": "jest",
     "dev": "nodemon -r dotenv/config -e * --watch src/ src/server.ts",
     "build": "tsc",
     "start": "pm2-docker start dist/server.js",
