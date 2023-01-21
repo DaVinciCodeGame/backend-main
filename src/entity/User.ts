@@ -8,7 +8,7 @@ export type UserConstructorArguments = {
 
 @Entity()
 export class User {
-  @ObjectIdColumn()
+  @ObjectIdColumn({ generated: true })
   readonly userId!: ObjectID;
 
   @Column({ nullable: false })
