@@ -16,7 +16,9 @@ export default class UsersRepository extends Repository<User> {
   }
 
   findOneByUserId(userId: string) {
-    return this.repository.findOne({ where: { userId: new ObjectID(userId) } });
+    return this.repository.findOne({
+      where: { userId: ObjectID.createFromHexString(userId) },
+    });
   }
 
   findAll() {
