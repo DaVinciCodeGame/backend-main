@@ -53,9 +53,13 @@ export default class AuthService {
     if (existUser)
       return {
         isFirstTime: false,
-        accessToken: jwt.sign({ userId: existUser.userId }, env.JWT_SECRET, {
-          expiresIn: '1h',
-        }),
+        accessToken: jwt.sign(
+          { userId: existUser.userId.toString() },
+          env.JWT_SECRET,
+          {
+            expiresIn: '1h',
+          }
+        ),
       };
 
     const newUser = await this.usersRepository.create({
@@ -66,9 +70,13 @@ export default class AuthService {
 
     return {
       isFirstTime: true,
-      accessToken: jwt.sign({ userId: newUser.userId }, env.JWT_SECRET, {
-        expiresIn: '1h',
-      }),
+      accessToken: jwt.sign(
+        { userId: newUser.userId.toString() },
+        env.JWT_SECRET,
+        {
+          expiresIn: '1h',
+        }
+      ),
     };
   }
 }

@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, Column, ObjectIdColumn, ObjectID } from 'typeorm';
 
 export type UserConstructorArguments = {
   username: string;
@@ -8,8 +8,8 @@ export type UserConstructorArguments = {
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn('increment')
-  readonly userId!: number;
+  @ObjectIdColumn()
+  readonly userId!: ObjectID;
 
   @Column({ nullable: false })
   username!: string;

@@ -1,3 +1,4 @@
+import { ObjectID } from 'typeorm';
 import { User, UserConstructorArguments } from '../entity/User';
 import Repository from '../libs/base-repository';
 
@@ -14,8 +15,8 @@ export default class UsersRepository extends Repository<User> {
     return this.repository.save(new User(userData));
   }
 
-  findOneByUserId(userId: number) {
-    return this.repository.findOne({ where: { userId } });
+  findOneByUserId(userId: string) {
+    return this.repository.findOne({ where: { userId: new ObjectID(userId) } });
   }
 
   findAll() {

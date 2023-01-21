@@ -8,13 +8,13 @@ export default class UsersService {
     this.usersRepository = new UsersRepository();
   }
 
-  async getMyInfo(userId: number) {
+  async getMyInfo(userId: string) {
     const user = await this.usersRepository.findOneByUserId(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
     return {
-      userId: user.userId,
+      userId: user.userId.toString(),
       username: user.username,
       profileImageUrl: user.profileImageUrl,
       score: user.score,
@@ -41,7 +41,7 @@ export default class UsersService {
     return leaderboard;
   }
 
-  async updateProfile(userId: number, username: string) {
+  async updateProfile(userId: string, username: string) {
     const user = await this.usersRepository.findOneByUserId(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
@@ -49,7 +49,7 @@ export default class UsersService {
     if (username) await this.usersRepository.updateUsername(user, username);
   }
 
-  async unregister(userId: number) {
+  async unregister(userId: string) {
     const user = await this.usersRepository.findOneByUserId(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
