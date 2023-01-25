@@ -9,9 +9,6 @@ on:
       - 'README.md'
       - 'License'
 
-permissions:
-  contents: read
-
 jobs:
   Deploy:
     runs-on: ubuntu-20.04
