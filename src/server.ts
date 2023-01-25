@@ -1,15 +1,17 @@
-import dataSource from './config/mongodb';
+import mysqlDataSource from './config/mysql';
 import App from './app';
 import logger from './config/logger';
 import env from './config/env';
 
-dataSource
+mysqlDataSource
   .initialize()
   .then(() => {
-    logger.info('데이터베이스 연결 완료');
+    logger.info('MySQL 연결 완료');
     const app = new App();
     app.listen(Number(env.PORT));
   })
   .catch((err: any) => {
-    logger.error(err.message);
+    if (err instanceof Error) {
+      logger.error(err.message);
+    }
   });
