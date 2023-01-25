@@ -22,7 +22,7 @@ jobs:
           script_stop: true
           script: |
             ssh -i ${{ secrets.APP_SERVER_KEY_PATH }} ${{ secrets.APP_SERVER_USERNAME }}@${{ secrets.APP_SERVER_IP }}
-            cd ${{ APP_PATH }}
+            cd ${{ secrets.APP_PATH }}
             git pull
             npm run build
             pm2 restart server
