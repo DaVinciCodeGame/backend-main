@@ -16,13 +16,16 @@ jobs:
       - name: SSH Remote Commands
         uses: appleboy/ssh-action@v0.1.7
         with:
-          host: ${{ secrets.BASTION_HOST_IP }}
-          username: ${{ secrets.BASTION_HOST_USERNAME }}
-          key: ${{ secrets.BASTION_HOST_KEY }}
+          proxy_host: ${{ secrets.BASTION_HOST_IP }}
+          proxy_username: ${{ secrets.BASTION_HOST_USERNAME }}
+          proxy_key: ${{ secrets.BASTION_HOST_KEY }}
+          host: ${{ secrets.APP_SERVER_IP }}
+          username: ${{ secrets.APP_SERVER_USERNAME }}
+          key: ${{ secrets.APP_SERVER_KEY }}
           script_stop: true
           script: |
-            ssh -i ${{ secrets.APP_SERVER_KEY_PATH }} ${{ secrets.APP_SERVER_USERNAME }}@${{ secrets.APP_SERVER_IP }}
             cd ${{ secrets.APP_PATH }}
             git pull
+            npm install
             npm run build
             pm2 restart server
