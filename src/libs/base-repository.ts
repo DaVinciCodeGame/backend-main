@@ -1,10 +1,10 @@
 import { EntityTarget, ObjectLiteral } from 'typeorm';
-import dataSource from '../config/mongodb';
+import mysqlDataSource from '../config/mysql';
 
 export default abstract class Repository<E extends ObjectLiteral> {
   protected readonly repository;
 
   constructor(entity: EntityTarget<E>) {
-    this.repository = dataSource.getRepository(entity);
+    this.repository = mysqlDataSource.getRepository(entity);
   }
 }

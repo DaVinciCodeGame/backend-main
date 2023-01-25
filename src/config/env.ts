@@ -4,7 +4,7 @@ import Joi from 'joi';
 type Env = {
   PORT: string;
   NODE_ENV: string;
-  MONGO_URL: string;
+  MYSQL_URL: string;
   KAKAO_REST_API_KEY: string;
   JWT_SECRET: string;
   AWS_S3_ACCESS_KEY_ID: string;
@@ -15,7 +15,7 @@ const { value: env, error } = Joi.object<Env>()
   .keys({
     PORT: Joi.string(),
     NODE_ENV: Joi.string(),
-    MONGO_URL: Joi.string(),
+    MYSQL_URL: Joi.string(),
     KAKAO_REST_API_KEY: Joi.string(),
     JWT_SECRET: Joi.string(),
     AWS_S3_ACCESS_KEY_ID: Joi.string(),

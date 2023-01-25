@@ -1,6 +1,11 @@
-import { ObjectID } from 'typeorm';
-import { User, UserConstructorArguments } from '../entity/User';
+import { User } from '../entity/User';
 import Repository from '../libs/base-repository';
+
+type UserParams = {
+  kakaoId: number;
+  username: string;
+  profileImageUrl: string;
+};
 
 export default class UsersRepository extends Repository<User> {
   constructor() {
@@ -11,13 +16,19 @@ export default class UsersRepository extends Repository<User> {
     return this.repository.findOne({ where: { kakaoId } });
   }
 
-  create(userData: UserConstructorArguments) {
-    return this.repository.save(new User(userData));
+  create({ kakaoId, username, profileImageUrl }: UserParams) {
+    const user = new User();
+
+    user.kakaoId = kakaoId;
+    user.username = username;
+    user.profileImageUrl = profileImageUrl;
+
+    return this.repository.save(user);
   }
 
-  findOneByUserId(userId: string) {
+  findOneByUserId(userId: number) {
     return this.repository.findOne({
-      where: { userId: ObjectID.createFromHexString(userId) },
+      where: { userId },
     });
   }
 

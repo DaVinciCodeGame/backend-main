@@ -1,33 +1,26 @@
-import { Entity, Column, ObjectIdColumn, ObjectID } from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-export type UserConstructorArguments = {
-  username: string;
-  profileImageUrl: string;
-  kakaoId: number;
-};
-
+// HACK: 더 나은 정의 방법 찾아볼 것
 @Entity()
 export class User {
-  @ObjectIdColumn({ generated: true })
-  readonly userId!: ObjectID;
+  @PrimaryGeneratedColumn()
+  readonly userId!: number;
 
-  @Column({ nullable: false })
+  @Column()
   username!: string;
 
   @Column()
   profileImageUrl!: string;
 
-  @Column({ default: 0 })
-  score?: number;
-
-  @Column()
+  @Column({ type: 'bigint' })
   kakaoId!: number;
 
-  constructor(arg: UserConstructorArguments) {
-    if (arg) {
-      this.username = arg.username;
-      this.kakaoId = arg.kakaoId;
-      this.profileImageUrl = arg.profileImageUrl;
-    }
-  }
+  @Column({ default: 0 })
+  score!: number;
+
+  @Column()
+  ranking?: number;
+
+  @Column()
+  prevRanking?: number;
 }
