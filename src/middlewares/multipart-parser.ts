@@ -1,21 +1,15 @@
-import { badRequest } from '@hapi/boom';
-import { NextFunction, Request, Response } from 'express';
-import formidable from 'formidable';
+import multer, { memoryStorage } from 'multer';
 
-export function single(fieldName: string) {
-  function multipartParser(req: Request, res: Response, next: NextFunction) {
-    const form = formidable();
+type Options = {
+  field: string;
+  fileSize?: number;
+};
 
-    form.parse(req, (err, field, files) => {
-      if (!files[fieldName]) {
-        next(badRequest(`${fieldName} 필드가 없습니다.`));
-        return;
-      }
+export function single({ field, fileSize }: Options) {
+  const multipartParser = multer({
+    storage: memoryStorage(),
+    limits: { fileSize },
+  }).single(field);
 
-      res.locals.files = { [fieldName]: files[fieldName] };
-
-      next();
-    });
-  }
   return multipartParser;
 }

@@ -41,7 +41,11 @@ export default class UsersService {
     return leaderboard;
   }
 
-  async updateProfile(userId: number, username: string) {
+  async updateProfile(
+    userId: number,
+    username: string,
+    image: Express.Multer.File
+  ) {
     const user = await this.usersRepository.findOneByUserId(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
