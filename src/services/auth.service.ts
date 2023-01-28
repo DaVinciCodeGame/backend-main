@@ -1,8 +1,9 @@
-import jwt from 'jsonwebtoken';
+import { badRequest } from '@hapi/boom';
 import axios from 'axios';
+import jwt from 'jsonwebtoken';
 import env from '../config/env';
-
 import UsersRepository from '../repositories/users.repository';
+import { putObject } from '../utils/s3Manager';
 
 type KakaoUserInfo = {
   id: number;
@@ -37,7 +38,10 @@ export default class AuthService {
       data: {
         id: kakaoId,
         kakao_account: {
-          profile: { nickname: username, thumbnail_image_url: profileImageUrl },
+          profile: {
+            nickname: username,
+            thumbnail_image_url: kakaoProfileImageUrl,
+          },
         },
       },
     }: { data: KakaoUserInfo } = await axios.get(
@@ -57,6 +61,16 @@ export default class AuthService {
           expiresIn: '1h',
         }),
       };
+
+    const {
+      data: image,
+      headers: { 'content-type': contentType },
+    } = await axios.get(kakaoProfileImageUrl);
+
+    if (!image || !contentType)
+      throw badRequest('카카오 계정의 정보가 잘못됐습니다.');
+
+    const profileImageUrl = await putObject(image, contentType);
 
     const newUser = await this.usersRepository.create({
       kakaoId,

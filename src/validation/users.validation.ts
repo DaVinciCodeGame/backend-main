@@ -27,6 +27,7 @@ export const updateUsernameSchema = {
     locals: Joi.object().keys({
       userId: Joi.number().required().description('유저 식별자'),
     }),
+    file: Joi.object<Express.Multer.File>(),
   },
 };
 

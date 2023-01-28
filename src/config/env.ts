@@ -1,29 +1,35 @@
 import 'dotenv/config';
 import Joi from 'joi';
 
-type Env = {
-  PORT: string;
-  NODE_ENV: string;
-  MYSQL_URL: string;
-  KAKAO_REST_API_KEY: string;
-  JWT_SECRET: string;
-  AWS_S3_ACCESS_KEY_ID: string;
-  AWS_S3_SECRET_ACCESS_KEY: string;
-};
+function validate() {
+  const { value, error } = Joi.object<{
+    PORT: string;
+    NODE_ENV: string;
+    MYSQL_URL: string;
+    KAKAO_REST_API_KEY: string;
+    JWT_SECRET: string;
+    AWS_S3_ACCESS_KEY_ID: string;
+    AWS_S3_SECRET_ACCESS_KEY: string;
+    AWS_S3_BUCKET_NAME: string;
+  }>()
+    .keys({
+      PORT: Joi.string().required(),
+      NODE_ENV: Joi.string().required(),
+      MYSQL_URL: Joi.string().required(),
+      KAKAO_REST_API_KEY: Joi.string().required(),
+      JWT_SECRET: Joi.string().required(),
+      AWS_S3_ACCESS_KEY_ID: Joi.string().required(),
+      AWS_S3_SECRET_ACCESS_KEY: Joi.string().required(),
+      AWS_S3_BUCKET_NAME: Joi.string().required(),
+    })
+    .unknown()
+    .validate(process.env);
 
-const { value: env, error } = Joi.object<Env>()
-  .keys({
-    PORT: Joi.string(),
-    NODE_ENV: Joi.string(),
-    MYSQL_URL: Joi.string(),
-    KAKAO_REST_API_KEY: Joi.string(),
-    JWT_SECRET: Joi.string(),
-    AWS_S3_ACCESS_KEY_ID: Joi.string(),
-    AWS_S3_SECRET_ACCESS_KEY: Joi.string(),
-  })
-  .unknown()
-  .validate(process.env);
+  if (error) throw error;
 
-if (error) throw error;
+  return value;
+}
 
-export default env as Env;
+const env = validate();
+
+export default env;
