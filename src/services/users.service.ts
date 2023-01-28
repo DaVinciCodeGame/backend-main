@@ -28,16 +28,19 @@ export default class UsersService {
   async getLeaderboard() {
     const users = await this.usersRepository.findAll();
 
-    const leaderboard = users.map(({ username, profileImageUrl, score }) => {
-      return {
-        username,
-        profileImageUrl,
-        score,
-        ranking: 0,
-        change: 0,
-        rank: 0,
-      };
-    });
+    const leaderboard = users.map(
+      ({ userId, username, profileImageUrl, score }) => {
+        return {
+          userId,
+          username,
+          profileImageUrl,
+          score,
+          ranking: 0,
+          change: 0,
+          rank: 0,
+        };
+      }
+    );
 
     return leaderboard;
   }
