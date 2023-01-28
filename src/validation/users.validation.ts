@@ -26,6 +26,9 @@ export const updateUsernameSchema = {
     }),
     locals: Joi.object().keys({
       userId: Joi.number().required().description('유저 식별자'),
+      files: Joi.object().keys({
+        image: Joi.any(), // HACK: 적당한 스키마 만들기
+      }),
     }),
   },
 };

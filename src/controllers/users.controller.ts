@@ -42,12 +42,12 @@ export default class UsersController {
 
   updateProfile: RequestHandler = async (req, res, next) => {
     try {
-      const [{ username }, { userId }] = await Promise.all([
+      const [{ username }, { userId, files: image }] = await Promise.all([
         updateUsernameSchema.input.body.validateAsync(req.body),
         updateUsernameSchema.input.locals.validateAsync(res.locals),
       ]);
 
-      await this.usersService.updateProfile(userId, username);
+      await this.usersService.updateProfile(userId, username, image);
 
       res.status(204).send();
     } catch (err) {
