@@ -12,7 +12,7 @@ export function single(fieldName: string) {
         return;
       }
 
-      res.locals.files[fieldName] = files[fieldName];
+      res.locals.files = { [fieldName]: files[fieldName] };
 
       next();
     });
