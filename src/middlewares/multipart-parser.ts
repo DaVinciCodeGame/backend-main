@@ -4,21 +4,18 @@ import formidable from 'formidable';
 
 export function single(fieldName: string) {
   function multipartParser(req: Request, res: Response, next: NextFunction) {
-    try {
-      const form = formidable();
+    const form = formidable();
 
-      form.parse(req, (err, field, files) => {
-        if (err) throw err;
-        if (!files[fieldName])
-          throw badRequest(`${fieldName} 필드가 없습니다.`);
+    form.parse(req, (err, field, files) => {
+      if (!files[fieldName]) {
+        next(badRequest(`${fieldName} 필드가 없습니다.`));
+        return;
+      }
 
-        res.locals.files[fieldName] = files[fieldName];
+      res.locals.files[fieldName] = files[fieldName];
 
-        next();
-      });
-    } catch (err) {
-      next(err);
-    }
+      next();
+    });
   }
   return multipartParser;
 }
