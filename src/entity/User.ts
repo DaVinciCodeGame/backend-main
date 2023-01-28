@@ -18,9 +18,9 @@ export class User {
   @Column({ default: 0 })
   score!: number;
 
-  @Column()
+  @Column({ nullable: true })
   ranking?: number;
 
-  @Column()
+  @Column({ nullable: true })
   prevRanking?: number;
 }
