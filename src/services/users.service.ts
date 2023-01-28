@@ -1,5 +1,6 @@
 import { badRequest } from '@hapi/boom';
 import UsersRepository from '../repositories/users.repository';
+import { putObject } from '../utils/s3Manager';
 
 export default class UsersService {
   usersRepository: UsersRepository;
@@ -51,6 +52,11 @@ export default class UsersService {
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
     if (username) await this.usersRepository.updateUsername(user, username);
+    if (image) {
+      const imageUrl = await putObject(image.buffer, image.mimetype);
+
+      await this.usersRepository.updateProfileImageUrl(user, imageUrl);
+    }
   }
 
   async unregister(userId: number) {
