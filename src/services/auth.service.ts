@@ -65,7 +65,7 @@ export default class AuthService {
     const {
       data,
       headers: { 'content-type': contentType },
-    } = await axios.get(kakaoProfileImageUrl);
+    } = await axios.get(kakaoProfileImageUrl, { responseType: 'arraybuffer' });
 
     if (!data || !contentType)
       throw badRequest('카카오 계정의 정보가 잘못됐습니다.');
