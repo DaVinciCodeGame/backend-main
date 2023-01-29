@@ -1,4 +1,6 @@
 import { badRequest } from '@hapi/boom';
+import axios from 'axios';
+import env from '../config/env';
 import UsersRepository from '../repositories/users.repository';
 import { putObject } from '../utils/s3Manager';
 
@@ -67,6 +69,13 @@ export default class UsersService {
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
-    return this.usersRepository.delete(user);
+    return Promise.all([
+      this.usersRepository.delete(user),
+      axios.post(
+        'https://kapi.kakao.com/v1/user/unlink',
+        { target_id_type: 'user_id', target_id: user.kakaoId },
+        { headers: { Authorization: `KakaoAK ${env.KAKAO_ADMIN_KEY}` } }
+      ),
+    ]);
   }
 }
