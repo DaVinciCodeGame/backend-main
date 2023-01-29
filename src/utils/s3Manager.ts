@@ -9,8 +9,7 @@ export async function putObject(body: any, contentType: string) {
     Key: key,
     Body: body,
     ContentType: contentType,
-    ACL: 'public-read',
   });
 
-  return `https://${env.AWS_S3_BUCKET_NAME}.s3.ap-northeast-2.amazonaws.com/${key}`;
+  return `https://cdn.davinci-code.online/${key}`;
 }
