@@ -1,11 +1,11 @@
 import { RequestHandler } from 'express';
-import UsersService from '../services/users.service';
+import RoomsService from '../services/rooms.service';
 import schema from '../validation/rooms.validation';
 
-export default class UsersController {
-  usersService: UsersService;
+export default class RoomsController {
+  roomsService: RoomsService;
 
   constructor() {
-    this.usersService = new UsersService();
+    this.roomsService = new RoomsService();
   }
 }
