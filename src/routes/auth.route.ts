@@ -6,7 +6,7 @@ const authController = new AuthController();
 const authRouter = Router();
 
 authRouter
-  .post('/kakao', authController.authenticateWithKakao)
-  .delete('/kakao', authorize, authController.unregisterFromKakao);
+  .post('/login/kakao', authController.authenticateWithKakao)
+  .post('/unregister/kakao', authorize, authController.unregisterFromKakao);
 
 export default authRouter;
