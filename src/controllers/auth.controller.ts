@@ -1,7 +1,10 @@
 import { RequestHandler } from 'express';
 import AuthService from '../services/auth.service';
 
-import { authenticateWithKakaoSchema } from '../validation/auth.validation';
+import {
+  authenticateWithKakaoSchema,
+  unregisterFromKakaoSchema,
+} from '../validation/auth.validation';
 
 export default class AuthController {
   authService: AuthService;
@@ -30,6 +33,21 @@ export default class AuthController {
         })
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  unregisterFromKakao: RequestHandler = async (req, res, next) => {
+    try {
+      const [{ userId }, { code, redirectUri }] = await Promise.all([
+        unregisterFromKakaoSchema.input.locals.validateAsync(res.locals),
+        unregisterFromKakaoSchema.input.query.validateAsync(req.query),
+      ]);
+
+      await this.authService.unregisterFromKakao(userId, code, redirectUri);
+
+      res.status(204).send();
     } catch (err) {
       next(err);
     }

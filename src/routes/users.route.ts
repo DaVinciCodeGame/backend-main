@@ -15,7 +15,6 @@ usersRouter
     authorize,
     single({ field: 'image', fileSize: 500 * 1024 }),
     usersController.updateProfile
-  )
-  .delete('/me', authorize, usersController.unregister);
+  );
 
 export default usersRouter;

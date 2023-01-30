@@ -49,11 +49,3 @@ export const updateUsernameSchema = {
     file: Joi.object<Express.Multer.File>(),
   },
 };
-
-export const unregisterSchema = {
-  input: {
-    locals: Joi.object().keys({
-      userId: Joi.number().required().description('유저 식별자'),
-    }),
-  },
-};
