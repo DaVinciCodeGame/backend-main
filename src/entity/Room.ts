@@ -15,9 +15,6 @@ export class Room {
   @Column({ default: false })
   isPlaying!: boolean;
 
-  @Column()
-  isPrivate!: boolean;
-
   @Column({ nullable: true })
   password?: string;
 }
