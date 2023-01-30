@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import UsersService from '../services/users.service';
 import {
+  getLeaderboardSchema,
   getMyInfoSchema,
   unregisterSchema,
   updateUsernameSchema,
@@ -32,6 +33,8 @@ export default class UsersController {
   getLeaderboard: RequestHandler = async (req, res, next) => {
     try {
       const leaderboard = await this.usersService.getLeaderboard();
+
+      await getLeaderboardSchema.output.body.validateAsync(leaderboard);
 
       res.status(200).json(leaderboard);
     } catch (err) {

@@ -8,14 +8,33 @@ export const getMyInfoSchema = {
   },
   output: {
     body: Joi.object().keys({
-      userId: Joi.number(),
-      username: Joi.string(),
-      profileImageUrl: Joi.string(),
-      score: Joi.number(),
-      ranking: Joi.number(),
-      change: Joi.number(),
-      rank: Joi.number(),
+      userId: Joi.number().required().description('유저 식별자'),
+      username: Joi.string().required().description('유저명'),
+      profileImageUrl: Joi.string().required().description('프로필 사진의 URL'),
+      score: Joi.number().required().description('점수'),
+      ranking: Joi.number().allow(null).required().description('순위'),
+      prevRanking: Joi.number().allow(null).required().description('이전 순위'),
     }),
+  },
+};
+
+export const getLeaderboardSchema = {
+  output: {
+    body: Joi.array().items(
+      Joi.object().keys({
+        userId: Joi.number().required().description('유저 식별자'),
+        username: Joi.string().required().description('유저명'),
+        profileImageUrl: Joi.string()
+          .required()
+          .description('프로필 사진의 URL'),
+        score: Joi.number().required().description('점수'),
+        ranking: Joi.number().allow(null).required().description('순위'),
+        prevRanking: Joi.number()
+          .allow(null)
+          .required()
+          .description('이전 순위'),
+      })
+    ),
   },
 };
 
