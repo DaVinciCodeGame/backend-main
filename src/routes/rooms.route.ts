@@ -6,6 +6,9 @@ const roomsRouter = Router();
 
 const roomsController = new RoomsController();
 
-roomsRouter.post('/').get('/').post('/quickstart');
+roomsRouter
+  .post('/', authorize, roomsController.createRoom)
+  .get('/')
+  .post('/quickstart');
 
 export default roomsRouter;
