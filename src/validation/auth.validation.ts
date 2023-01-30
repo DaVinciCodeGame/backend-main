@@ -18,3 +18,17 @@ export const authenticateWithKakaoSchema = {
     }),
   },
 };
+
+export const unregisterFromKakaoSchema = {
+  input: {
+    query: Joi.object()
+      .keys({
+        code: Joi.string().required().description('인가 코드'),
+        'redirect-uri': Joi.string().required().description('리다이렉트 URI'),
+      })
+      .required(),
+    locals: Joi.object().keys({
+      userId: Joi.number().required().description('유저 식별자'),
+    }),
+  },
+};

@@ -87,4 +87,30 @@ export default class AuthService {
       }),
     };
   }
+
+  async unregisterFromKakao(userId: number, code: string, redirectUri: string) {
+    const user = await this.usersRepository.findOneByUserId(userId);
+
+    if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
+
+    await Promise.all([
+      this.usersRepository.delete(user),
+      axios
+        .post('https://kauth.kakao.com/oauth/token', null, {
+          params: {
+            grant_type: 'authorization_code',
+            client_id: env.KAKAO_REST_API_KEY,
+            redirect_uri: redirectUri,
+            code,
+          },
+        })
+        .then(({ data: { access_token: accessToken } }) =>
+          axios.post(
+            'https://kapi.kakao.com/v1/user/unlink',
+            {},
+            { headers: { Authorization: `Bearer ${accessToken}` } }
+          )
+        ),
+    ]);
+  }
 }

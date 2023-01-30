@@ -3,7 +3,6 @@ import UsersService from '../services/users.service';
 import {
   getLeaderboardSchema,
   getMyInfoSchema,
-  unregisterSchema,
   updateUsernameSchema,
 } from '../validation/users.validation';
 
@@ -51,20 +50,6 @@ export default class UsersController {
       ]);
 
       await this.usersService.updateProfile(userId, username, image);
-
-      res.status(204).send();
-    } catch (err) {
-      next(err);
-    }
-  };
-
-  unregister: RequestHandler = async (req, res, next) => {
-    try {
-      const { userId } = await unregisterSchema.input.locals.validateAsync(
-        res.locals
-      );
-
-      await this.usersService.unregister(userId);
 
       res.status(204).send();
     } catch (err) {
