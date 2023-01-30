@@ -1,15 +1,10 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryColumn } from 'typeorm';
 
 // HACK: 더 나은 정의 방법 찾아볼 것
 @Entity()
 export class Room {
-  @PrimaryGeneratedColumn()
-  readonly roomId!: number;
+  @PrimaryColumn()
+  roomId!: number;
 
   @Column()
   roomName!: string;
