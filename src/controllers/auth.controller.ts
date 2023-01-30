@@ -13,6 +13,21 @@ export default class AuthController {
     this.authService = new AuthService();
   }
 
+  static logout: RequestHandler = async (req, res, next) => {
+    try {
+      res
+        .clearCookie('accessToken', {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'none',
+        })
+        .status(204)
+        .send();
+    } catch (err) {
+      next(err);
+    }
+  };
+
   authenticateWithKakao: RequestHandler = async (req, res, next) => {
     try {
       const { code, 'redirect-uri': redirectUri } =
