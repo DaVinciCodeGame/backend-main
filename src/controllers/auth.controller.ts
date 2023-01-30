@@ -45,6 +45,7 @@ export default class AuthController {
           httpOnly: true,
           secure: true,
           sameSite: 'none',
+          maxAge: 60 * 60 * 1000,
         })
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
