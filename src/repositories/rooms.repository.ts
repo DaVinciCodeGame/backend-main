@@ -1,4 +1,3 @@
-import bcrypt from 'bcrypt';
 import { Room } from '../entity/Room';
 import Repository from '../libs/base-repository';
 
@@ -23,7 +22,7 @@ export default class RoomsRepository extends Repository<Room> {
     return this.repository.save(room);
   }
 
-  async findOneByRoomId(roomId: number) {
+  findOneByRoomId(roomId: number) {
     return this.repository.findOne({ where: { roomId } });
   }
 }
