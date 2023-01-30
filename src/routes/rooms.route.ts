@@ -4,7 +4,7 @@ import authorize from '../middlewares/authorize';
 
 const roomsRouter = Router();
 
-const rommsController = new RoomsController();
+const roomsController = new RoomsController();
 
 roomsRouter.post('/').get('/').post('/quickstart');
 
