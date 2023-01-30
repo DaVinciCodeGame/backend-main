@@ -1,4 +1,9 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 // HACK: 더 나은 정의 방법 찾아볼 것
 @Entity()
@@ -17,4 +22,7 @@ export class Room {
 
   @Column({ nullable: true })
   password?: string;
+
+  @CreateDateColumn()
+  createdAt!: Date;
 }
