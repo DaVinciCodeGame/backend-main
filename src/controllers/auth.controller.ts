@@ -47,7 +47,14 @@ export default class AuthController {
 
       await this.authService.unregisterFromKakao(userId, code, redirectUri);
 
-      res.status(204).send();
+      res
+        .clearCookie('accessToken', {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'none',
+        })
+        .status(204)
+        .send();
     } catch (err) {
       next(err);
     }
