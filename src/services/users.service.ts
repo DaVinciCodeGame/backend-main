@@ -21,9 +21,8 @@ export default class UsersService {
       username: user.username,
       profileImageUrl: user.profileImageUrl,
       score: user.score,
-      ranking: 0,
-      change: 0,
-      rank: 0,
+      ranking: user.ranking,
+      prevRanking: user.prevRanking,
     };
   }
 
@@ -31,15 +30,14 @@ export default class UsersService {
     const users = await this.usersRepository.findAll();
 
     const leaderboard = users.map(
-      ({ userId, username, profileImageUrl, score }) => {
+      ({ userId, username, profileImageUrl, score, ranking, prevRanking }) => {
         return {
           userId,
           username,
           profileImageUrl,
           score,
-          ranking: 0,
-          change: 0,
-          rank: 0,
+          ranking,
+          prevRanking,
         };
       }
     );
