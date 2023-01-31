@@ -29,7 +29,7 @@ const authorize: RequestHandler = async (req, res, next) => {
       );
 
     res.locals.userId = payload.userId;
-    res.locals.accessTokenExp = payload.exp;
+    res.locals.accessTokenExp = payload.exp * 1000 - Date.now();
 
     next();
   } catch (err) {
