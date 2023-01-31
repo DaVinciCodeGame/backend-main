@@ -3,6 +3,7 @@ import AuthService from '../services/auth.service';
 
 import {
   authenticateWithKakaoSchema,
+  checkTokenSchema,
   unregisterFromKakaoSchema,
 } from '../validation/auth.validation';
 
@@ -23,6 +24,17 @@ export default class AuthController {
         })
         .status(204)
         .send();
+    } catch (err) {
+      next(err);
+    }
+  };
+
+  static check: RequestHandler = async (req, res, next) => {
+    try {
+      const { userId, accessTokenExp } =
+        await checkTokenSchema.input.locals.validateAsync(res.locals);
+
+      res.status(200).json({ userId, accessTokenExp });
     } catch (err) {
       next(err);
     }
