@@ -39,6 +39,8 @@ export default class RoomsController {
         search
       );
 
+      await schema.getPagedList.resBody.validateAsync(result);
+
       res.status(200).json(result);
     } catch (err) {
       next(err);
