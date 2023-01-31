@@ -16,13 +16,19 @@ const schema = {
     }),
   },
   getPagedList: {
-    reqQuery: Joi.object().keys({
-      page: Joi.number().description('목록 번호'),
-      searchType: Joi.string().description('검색 유형'),
-      search: Joi.string().description('검색어'),
-    }),
+    reqQuery: Joi.object<{
+      page: number;
+      searchType?: 'number' | 'name';
+      search?: string;
+    }>()
+      .keys({
+        page: Joi.number().default(1).description('목록 번호'),
+        searchType: Joi.valid('number', 'name').description('검색 유형'),
+        search: Joi.string().description('검색어'),
+      })
+      .and('searchType', 'search'),
     resBody: Joi.object().keys({
-      maxPage: Joi.number().required().description('최대 페이지'),
+      totalPage: Joi.number().required().description('최대 페이지'),
       rooms: Joi.array()
         .items(
           Joi.object().keys({
