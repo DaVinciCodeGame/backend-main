@@ -8,7 +8,7 @@ const roomsController = new RoomsController();
 
 roomsRouter
   .post('/', authorize, roomsController.createRoom)
-  .get('/')
+  .get('/', roomsController.getPagedList)
   .post('/quickstart');
 
 export default roomsRouter;
