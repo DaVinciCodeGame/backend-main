@@ -47,6 +47,7 @@ export default class AuthController {
           sameSite: 'none',
           maxAge: 60 * 60 * 1000,
           domain: '.davinci-code.online',
+          path: '/',
         })
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
