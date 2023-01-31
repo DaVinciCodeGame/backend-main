@@ -3,6 +3,8 @@ import env from '../config/env';
 import { Room } from '../entity/Room';
 import RoomsRepository from '../repositories/rooms.repository';
 
+const LIMIT_PER_PAGE = 12;
+
 export default class RoomsService {
   roomsRepository: RoomsRepository;
 
@@ -45,5 +47,39 @@ export default class RoomsService {
       return retried;
     }
     return randomGeneratedNumber;
+  }
+
+  async getPagedList(
+    page: number,
+    searchType: 'number' | 'name' | undefined,
+    search: string | undefined
+  ) {
+    let list: [number, Room[]];
+
+    if (searchType && search) {
+      if (searchType === 'number') {
+        const roomId = Number(search);
+
+        list = await this.roomsRepository.getPagedListFilteredById(
+          page,
+          LIMIT_PER_PAGE,
+          roomId
+        );
+      } else {
+        list = await this.roomsRepository.getPagedListFilteredByName(
+          page,
+          LIMIT_PER_PAGE,
+          search
+        );
+      }
+    } else {
+      list = await this.roomsRepository.getPagedList(page, LIMIT_PER_PAGE);
+    }
+
+    const [totalCount, rooms] = list;
+
+    const totalPage = Math.ceil(totalCount / LIMIT_PER_PAGE);
+
+    return { totalPage, rooms };
   }
 }

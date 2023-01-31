@@ -27,4 +27,21 @@ export default class RoomsController {
       next(err);
     }
   };
+
+  getPagedList: RequestHandler = async (req, res, next) => {
+    try {
+      const { page, searchType, search } =
+        await schema.getPagedList.reqQuery.validateAsync(req.query);
+
+      const result = await this.roomsService.getPagedList(
+        page,
+        searchType,
+        search
+      );
+
+      res.status(200).json(result);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
