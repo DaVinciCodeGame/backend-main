@@ -15,7 +15,7 @@ const schema = {
       roomId: Joi.number().required().description('방 식별자'),
     }),
   },
-  getRooms: {
+  getPagedList: {
     reqQuery: Joi.object().keys({
       page: Joi.number().description('목록 번호'),
       searchType: Joi.string().description('검색 유형'),
