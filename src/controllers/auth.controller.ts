@@ -28,6 +28,16 @@ export default class AuthController {
     }
   };
 
+  static check: RequestHandler = async (req, res, next) => {
+    try {
+      const { userId, accessTokenExp } = res.locals;
+
+      res.status(200).json({ userId, accessTokenExp });
+    } catch (err) {
+      next(err);
+    }
+  };
+
   authenticateWithKakao: RequestHandler = async (req, res, next) => {
     try {
       const { code, 'redirect-uri': redirectUri } =
