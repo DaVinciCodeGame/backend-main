@@ -32,3 +32,14 @@ export const unregisterFromKakaoSchema = {
     }),
   },
 };
+
+export const checkTokenSchema = {
+  input: {
+    locals: Joi.object().keys({
+      userId: Joi.number().required().description('유저 식별자'),
+      accessTokenExp: Joi.number()
+        .required()
+        .description('엑세스 토큰 남은 시간'),
+    }),
+  },
+};
