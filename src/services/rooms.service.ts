@@ -76,7 +76,20 @@ export default class RoomsService {
       list = await this.roomsRepository.getPagedList(page, LIMIT_PER_PAGE);
     }
 
-    const [totalCount, rooms] = list;
+    const [totalCount, rawRooms] = list;
+
+    const rooms = rawRooms.map(
+      ({ maxMembers, isPlaying, roomId, roomName, password }) => {
+        return {
+          currentMembers: 0,
+          maxMembers,
+          isPlaying,
+          roomId,
+          roomName,
+          isPrivate: Boolean(password),
+        };
+      }
+    );
 
     const totalPage = Math.ceil(totalCount / LIMIT_PER_PAGE);
 
