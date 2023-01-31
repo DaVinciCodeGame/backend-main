@@ -45,7 +45,7 @@ export default class AuthController {
           httpOnly: true,
           secure: true,
           sameSite: 'none',
-          maxAge: 24 * 60 * 60 * 1000,
+          maxAge: 60 * 60 * 1000,
           domain: '.davinci-code.online',
           path: '/',
         })
