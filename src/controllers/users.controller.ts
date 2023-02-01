@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
 import UsersService from '../services/users.service';
 import {
-  getLeaderboardSchema,
-  getMyInfoSchema,
-  updateUsernameSchema,
+  getLeaderboardValidator,
+  getMyInfoValidator,
+  updateUsernameValidator,
 } from '../validation/users.validation';
 
 export default class UsersController {
@@ -15,13 +15,11 @@ export default class UsersController {
 
   getMyInfo: RequestHandler = async (req, res, next) => {
     try {
-      const { userId } = await getMyInfoSchema.input.locals.validateAsync(
-        res.locals
-      );
+      const { userId } = await getMyInfoValidator.resLocals(res.locals);
 
       const userInfo = await this.usersService.getMyInfo(userId);
 
-      await getMyInfoSchema.output.body.validateAsync(userInfo);
+      await getMyInfoValidator.resBody(userInfo);
 
       res.status(200).json(userInfo);
     } catch (err) {
@@ -33,7 +31,7 @@ export default class UsersController {
     try {
       const leaderboard = await this.usersService.getLeaderboard();
 
-      await getLeaderboardSchema.output.body.validateAsync(leaderboard);
+      await getLeaderboardValidator.resBody(leaderboard);
 
       res.status(200).json(leaderboard);
     } catch (err) {
@@ -44,9 +42,9 @@ export default class UsersController {
   updateProfile: RequestHandler = async (req, res, next) => {
     try {
       const [{ username }, { userId }, image] = await Promise.all([
-        updateUsernameSchema.input.body.validateAsync(req.body),
-        updateUsernameSchema.input.locals.validateAsync(res.locals),
-        updateUsernameSchema.input.file.validateAsync(req.file),
+        updateUsernameValidator.reqBody(req.body),
+        updateUsernameValidator.resLocals(res.locals),
+        updateUsernameValidator.reqFile(req.file),
       ]);
 
       await this.usersService.updateProfile(userId, username, image);
