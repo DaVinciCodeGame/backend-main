@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import authorize from '../middlewares/authorize';
 import authRouter from './auth.route';
-import gameRouter from './game.route';
+import gameResultRouter from './game-result.route';
 import usersRouter from './users.route';
 
 const router = Router();
@@ -12,6 +12,6 @@ router
   })
   .use('/auth', authorize, authRouter)
   .use('/users', authorize, usersRouter)
-  .use('/game', gameRouter);
+  .use('/game', gameResultRouter);
 
 export default router;
