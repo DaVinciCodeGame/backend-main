@@ -2,8 +2,8 @@ import { RequestHandler } from 'express';
 import AuthService from '../services/auth.service';
 
 import {
-  authenticateWithKakaoValidator,
-  unregisterFromKakaoValidator,
+  authenticateWithKakaoValidator as loginValidator,
+  unregisterFromKakaoValidator as unregisterValidator,
   checkTokenValidator,
 } from '../validation/auth.validation';
 
@@ -41,15 +41,15 @@ export default class AuthController {
     }
   };
 
-  authenticateWithKakao: RequestHandler = async (req, res, next) => {
+  login: RequestHandler = async (req, res, next) => {
     try {
       const { code, 'redirect-uri': redirectUri } =
-        await authenticateWithKakaoValidator.reqQuery(req.query);
+        await loginValidator.reqQuery(req.query);
 
       const { isFirstTime, accessToken } =
         await this.authService.authenticateWithKakao(code, redirectUri);
 
-      await authenticateWithKakaoValidator.resCookie({ accessToken });
+      await loginValidator.resCookie({ accessToken });
 
       res
         .cookie('accessToken', accessToken)
@@ -60,11 +60,11 @@ export default class AuthController {
     }
   };
 
-  unregisterFromKakao: RequestHandler = async (req, res, next) => {
+  unregister: RequestHandler = async (req, res, next) => {
     try {
       const [{ userId }, { code, redirectUri }] = await Promise.all([
-        unregisterFromKakaoValidator.resLocals(res.locals),
-        unregisterFromKakaoValidator.reqQuery(req.query),
+        unregisterValidator.resLocals(res.locals),
+        unregisterValidator.reqQuery(req.query),
       ]);
 
       await this.authService.unregisterFromKakao(userId, code, redirectUri);

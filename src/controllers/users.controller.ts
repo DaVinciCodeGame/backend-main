@@ -1,9 +1,9 @@
 import { RequestHandler } from 'express';
 import UsersService from '../services/users.service';
 import {
-  getLeaderboardValidator,
-  getMyInfoValidator,
-  updateUsernameValidator,
+  readManyValidator,
+  readValidator,
+  updateValidator,
 } from '../validation/users.validation';
 
 export default class UsersController {
@@ -13,13 +13,13 @@ export default class UsersController {
     this.usersService = new UsersService();
   }
 
-  getMyInfo: RequestHandler = async (req, res, next) => {
+  read: RequestHandler = async (req, res, next) => {
     try {
-      const { userId } = await getMyInfoValidator.resLocals(res.locals);
+      const { userId } = await readValidator.resLocals(res.locals);
 
       const userInfo = await this.usersService.getMyInfo(userId);
 
-      await getMyInfoValidator.resBody(userInfo);
+      await readValidator.resBody(userInfo);
 
       res.status(200).json(userInfo);
     } catch (err) {
@@ -27,11 +27,11 @@ export default class UsersController {
     }
   };
 
-  getLeaderboard: RequestHandler = async (req, res, next) => {
+  readMany: RequestHandler = async (req, res, next) => {
     try {
       const leaderboard = await this.usersService.getLeaderboard();
 
-      await getLeaderboardValidator.resBody(leaderboard);
+      await readManyValidator.resBody(leaderboard);
 
       res.status(200).json(leaderboard);
     } catch (err) {
@@ -39,12 +39,12 @@ export default class UsersController {
     }
   };
 
-  updateProfile: RequestHandler = async (req, res, next) => {
+  update: RequestHandler = async (req, res, next) => {
     try {
       const [{ username }, { userId }, image] = await Promise.all([
-        updateUsernameValidator.reqBody(req.body),
-        updateUsernameValidator.resLocals(res.locals),
-        updateUsernameValidator.reqFile(req.file),
+        updateValidator.reqBody(req.body),
+        updateValidator.resLocals(res.locals),
+        updateValidator.reqFile(req.file),
       ]);
 
       await this.usersService.updateProfile(userId, username, image);
