@@ -32,6 +32,15 @@ export const userPrevRanking = Joi.number()
   .required()
   .description('이전 순위');
 
+export const userData = Joi.object().keys({
+  userId,
+  username,
+  profileImageUrl,
+  score: userScore,
+  ranking: userRanking,
+  prevRanking: userPrevRanking,
+});
+
 export const accessTokenExp = Joi.number()
   .required()
   .description('엑세스 토큰 남은 시간');
