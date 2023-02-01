@@ -52,7 +52,13 @@ export default class AuthController {
       await loginValidator.resCookie({ accessToken });
 
       res
-        .cookie('accessToken', accessToken)
+        .cookie('accessToken', accessToken, {
+          httpOnly: true,
+          secure: true,
+          sameSite: 'none',
+          maxAge: 60 * 60 * 1000,
+          domain: '.davinci-code.online',
+        })
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
     } catch (err) {
