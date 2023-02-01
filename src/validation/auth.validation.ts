@@ -7,28 +7,22 @@ import {
   userId,
 } from '../utils/schemas';
 
-export const authenticateWithKakaoSchema = {
-  input: {
-    query: Joi.object()
-      .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
-      .required(),
-  },
-  output: {
-    cookie: Joi.object().keys({ accessToken }).required(),
-  },
+export const authenticateWithKakaoValidator = {
+  reqQuery: Joi.object()
+    .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
+    .required().validateAsync,
+  resCookie: Joi.object().keys({ accessToken }).required().validateAsync,
 };
 
-export const unregisterFromKakaoSchema = {
-  input: {
-    query: Joi.object()
-      .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
-      .required(),
-    locals: Joi.object().keys({ userId, accessTokenExp }).required(),
-  },
+export const unregisterFromKakaoValidator = {
+  reqQuery: Joi.object()
+    .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
+    .required().validateAsync,
+  resLocals: Joi.object().keys({ userId, accessTokenExp }).required()
+    .validateAsync,
 };
 
-export const checkTokenSchema = {
-  input: {
-    locals: Joi.object().keys({ userId, accessTokenExp }).required(),
-  },
+export const checkTokenValidator = {
+  resLocals: Joi.object().keys({ userId, accessTokenExp }).required()
+    .validateAsync,
 };
