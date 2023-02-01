@@ -1,6 +1,5 @@
 import { RequestHandler } from 'express';
 import AuthService from '../services/auth.service';
-
 import {
   loginValidator,
   unregisterValidator,
@@ -33,9 +32,8 @@ export default class AuthController {
 
   static check: RequestHandler = async (req, res, next) => {
     try {
-      const { userId, accessTokenExp } = await checkTokenValidator.resLocals(
-        res.locals
-      );
+      const { userId, accessTokenExp } =
+        await checkTokenValidator.resLocals.validateAsync(res.locals);
 
       res.status(200).json({ userId, accessTokenExp });
     } catch (err) {
@@ -46,12 +44,12 @@ export default class AuthController {
   login: RequestHandler = async (req, res, next) => {
     try {
       const { code, 'redirect-uri': redirectUri } =
-        await loginValidator.reqQuery(req.query);
+        await loginValidator.reqQuery.validateAsync(req.query);
 
       const { isFirstTime, accessToken } =
         await this.authService.authenticateWithKakao(code, redirectUri);
 
-      await loginValidator.resCookie({ accessToken });
+      await loginValidator.resCookie.validateAsync({ accessToken });
 
       res
         .cookie('accessToken', accessToken, {
@@ -71,8 +69,8 @@ export default class AuthController {
   unregister: RequestHandler = async (req, res, next) => {
     try {
       const [{ userId }, { code, redirectUri }] = await Promise.all([
-        unregisterValidator.resLocals(res.locals),
-        unregisterValidator.reqQuery(req.query),
+        unregisterValidator.resLocals.validateAsync(res.locals),
+        unregisterValidator.reqQuery.validateAsync(req.query),
       ]);
 
       await this.authService.unregisterFromKakao(userId, code, redirectUri);
