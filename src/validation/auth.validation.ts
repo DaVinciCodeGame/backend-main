@@ -1,48 +1,34 @@
 import Joi from 'joi';
+import {
+  accessToken,
+  accessTokenExp,
+  authorizationCode,
+  redirectUri,
+  userId,
+} from '../utils/schemas';
 
 export const authenticateWithKakaoSchema = {
   input: {
     query: Joi.object()
-      .keys({
-        code: Joi.string().required().description('인가 코드'),
-        'redirect-uri': Joi.string().required().description('리다이렉트 URI'),
-      })
+      .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
       .required(),
   },
   output: {
-    cookie: Joi.object().keys({
-      accessToken: Joi.string()
-        .required()
-        .pattern(/^[\w-]{36}\.[\w-]+\.[\w-]{43}$/)
-        .description('액세스 토큰'),
-    }),
+    cookie: Joi.object().keys({ accessToken }).required(),
   },
 };
 
 export const unregisterFromKakaoSchema = {
   input: {
     query: Joi.object()
-      .keys({
-        code: Joi.string().required().description('인가 코드'),
-        'redirect-uri': Joi.string().required().description('리다이렉트 URI'),
-      })
+      .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
       .required(),
-    locals: Joi.object().keys({
-      userId: Joi.number().required().description('유저 식별자'),
-      accessTokenExp: Joi.number()
-        .required()
-        .description('엑세스 토큰 남은 시간'),
-    }),
+    locals: Joi.object().keys({ userId, accessTokenExp }).required(),
   },
 };
 
 export const checkTokenSchema = {
   input: {
-    locals: Joi.object().keys({
-      userId: Joi.number().required().description('유저 식별자'),
-      accessTokenExp: Joi.number()
-        .required()
-        .description('엑세스 토큰 남은 시간'),
-    }),
+    locals: Joi.object().keys({ userId, accessTokenExp }).required(),
   },
 };
