@@ -2,9 +2,9 @@ import { RequestHandler } from 'express';
 import AuthService from '../services/auth.service';
 
 import {
-  authenticateWithKakaoSchema,
-  checkTokenSchema,
-  unregisterFromKakaoSchema,
+  authenticateWithKakaoValidator as loginValidator,
+  unregisterFromKakaoValidator as unregisterValidator,
+  checkTokenValidator,
 } from '../validation/auth.validation';
 
 export default class AuthController {
@@ -33,8 +33,9 @@ export default class AuthController {
 
   static check: RequestHandler = async (req, res, next) => {
     try {
-      const { userId, accessTokenExp } =
-        await checkTokenSchema.input.locals.validateAsync(res.locals);
+      const { userId, accessTokenExp } = await checkTokenValidator.resLocals(
+        res.locals
+      );
 
       res.status(200).json({ userId, accessTokenExp });
     } catch (err) {
@@ -42,17 +43,15 @@ export default class AuthController {
     }
   };
 
-  authenticateWithKakao: RequestHandler = async (req, res, next) => {
+  login: RequestHandler = async (req, res, next) => {
     try {
       const { code, 'redirect-uri': redirectUri } =
-        await authenticateWithKakaoSchema.input.query.validateAsync(req.query);
+        await loginValidator.reqQuery(req.query);
 
       const { isFirstTime, accessToken } =
         await this.authService.authenticateWithKakao(code, redirectUri);
 
-      await authenticateWithKakaoSchema.output.cookie.validateAsync({
-        accessToken,
-      });
+      await loginValidator.resCookie({ accessToken });
 
       res
         .cookie('accessToken', accessToken, {
@@ -61,7 +60,6 @@ export default class AuthController {
           sameSite: 'none',
           maxAge: 60 * 60 * 1000,
           domain: '.davinci-code.online',
-          path: '/',
         })
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
@@ -70,11 +68,11 @@ export default class AuthController {
     }
   };
 
-  unregisterFromKakao: RequestHandler = async (req, res, next) => {
+  unregister: RequestHandler = async (req, res, next) => {
     try {
       const [{ userId }, { code, redirectUri }] = await Promise.all([
-        unregisterFromKakaoSchema.input.locals.validateAsync(res.locals),
-        unregisterFromKakaoSchema.input.query.validateAsync(req.query),
+        unregisterValidator.resLocals(res.locals),
+        unregisterValidator.reqQuery(req.query),
       ]);
 
       await this.authService.unregisterFromKakao(userId, code, redirectUri);
