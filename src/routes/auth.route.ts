@@ -8,7 +8,7 @@ const authRouter = Router();
 authRouter
   .get('/check', authorize, AuthController.check)
   .post('/logout', AuthController.logout)
-  .post('/login/kakao', authController.authenticateWithKakao)
-  .post('/unregister/kakao', authorize, authController.unregisterFromKakao);
+  .post('/login/kakao', authController.login)
+  .post('/unregister/kakao', authorize, authController.unregister);
 
 export default authRouter;
