@@ -1,48 +1,28 @@
 import Joi from 'joi';
+import {
+  accessToken,
+  accessTokenExp,
+  authorizationCode,
+  redirectUri,
+  userId,
+} from '../utils/schemas';
 
-export const authenticateWithKakaoSchema = {
-  input: {
-    query: Joi.object()
-      .keys({
-        code: Joi.string().required().description('인가 코드'),
-        'redirect-uri': Joi.string().required().description('리다이렉트 URI'),
-      })
-      .required(),
-  },
-  output: {
-    cookie: Joi.object().keys({
-      accessToken: Joi.string()
-        .required()
-        .pattern(/^[\w-]{36}\.[\w-]+\.[\w-]{43}$/)
-        .description('액세스 토큰'),
-    }),
-  },
+export const authenticateWithKakaoValidator = {
+  reqQuery: Joi.object()
+    .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
+    .required().validateAsync,
+  resCookie: Joi.object().keys({ accessToken }).required().validateAsync,
 };
 
-export const unregisterFromKakaoSchema = {
-  input: {
-    query: Joi.object()
-      .keys({
-        code: Joi.string().required().description('인가 코드'),
-        'redirect-uri': Joi.string().required().description('리다이렉트 URI'),
-      })
-      .required(),
-    locals: Joi.object().keys({
-      userId: Joi.number().required().description('유저 식별자'),
-      accessTokenExp: Joi.number()
-        .required()
-        .description('엑세스 토큰 남은 시간'),
-    }),
-  },
+export const unregisterFromKakaoValidator = {
+  reqQuery: Joi.object()
+    .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
+    .required().validateAsync,
+  resLocals: Joi.object().keys({ userId, accessTokenExp }).required()
+    .validateAsync,
 };
 
-export const checkTokenSchema = {
-  input: {
-    locals: Joi.object().keys({
-      userId: Joi.number().required().description('유저 식별자'),
-      accessTokenExp: Joi.number()
-        .required()
-        .description('엑세스 토큰 남은 시간'),
-    }),
-  },
+export const checkTokenValidator = {
+  resLocals: Joi.object().keys({ userId, accessTokenExp }).required()
+    .validateAsync,
 };
