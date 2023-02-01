@@ -10,19 +10,17 @@ import {
 export const loginValidator = {
   reqQuery: Joi.object()
     .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
-    .required().validateAsync,
-  resCookie: Joi.object().keys({ accessToken }).required().validateAsync,
+    .required(),
+  resCookie: Joi.object().keys({ accessToken }).required(),
 };
 
 export const unregisterValidator = {
   reqQuery: Joi.object()
     .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
-    .required().validateAsync,
-  resLocals: Joi.object().keys({ userId, accessTokenExp }).required()
-    .validateAsync,
+    .required(),
+  resLocals: Joi.object().keys({ userId, accessTokenExp }).required(),
 };
 
 export const checkTokenValidator = {
-  resLocals: Joi.object().keys({ userId, accessTokenExp }).required()
-    .validateAsync,
+  resLocals: Joi.object().keys({ userId, accessTokenExp }).required(),
 };

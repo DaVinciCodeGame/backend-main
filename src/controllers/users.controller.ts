@@ -15,11 +15,13 @@ export default class UsersController {
 
   read: RequestHandler = async (req, res, next) => {
     try {
-      const { userId } = await readValidator.resLocals(res.locals);
+      const { userId } = await readValidator.resLocals.validateAsync(
+        res.locals
+      );
 
       const userInfo = await this.usersService.getMyInfo(userId);
 
-      await readValidator.resBody(userInfo);
+      await readValidator.resBody.validateAsync(userInfo);
 
       res.status(200).json(userInfo);
     } catch (err) {
@@ -31,7 +33,7 @@ export default class UsersController {
     try {
       const leaderboard = await this.usersService.getLeaderboard();
 
-      await readManyValidator.resBody(leaderboard);
+      await readManyValidator.resBody.validateAsync(leaderboard);
 
       res.status(200).json(leaderboard);
     } catch (err) {
@@ -42,9 +44,9 @@ export default class UsersController {
   update: RequestHandler = async (req, res, next) => {
     try {
       const [{ username }, { userId }, image] = await Promise.all([
-        updateValidator.reqBody(req.body),
-        updateValidator.resLocals(res.locals),
-        updateValidator.reqFile(req.file),
+        updateValidator.reqBody.validateAsync(req.body),
+        updateValidator.resLocals.validateAsync(res.locals),
+        updateValidator.reqFile.validateAsync(req.file),
       ]);
 
       await this.usersService.updateProfile(userId, username, image);
