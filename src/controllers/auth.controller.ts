@@ -2,8 +2,8 @@ import { RequestHandler } from 'express';
 import AuthService from '../services/auth.service';
 
 import {
-  authenticateWithKakaoValidator as loginValidator,
-  unregisterFromKakaoValidator as unregisterValidator,
+  loginValidator,
+  unregisterValidator,
   checkTokenValidator,
 } from '../validation/auth.validation';
 

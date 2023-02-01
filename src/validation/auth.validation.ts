@@ -7,14 +7,14 @@ import {
   userId,
 } from '../utils/schemas';
 
-export const authenticateWithKakaoValidator = {
+export const loginValidator = {
   reqQuery: Joi.object()
     .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
     .required().validateAsync,
   resCookie: Joi.object().keys({ accessToken }).required().validateAsync,
 };
 
-export const unregisterFromKakaoValidator = {
+export const unregisterValidator = {
   reqQuery: Joi.object()
     .keys({ code: authorizationCode, 'redirect-uri': redirectUri })
     .required().validateAsync,
