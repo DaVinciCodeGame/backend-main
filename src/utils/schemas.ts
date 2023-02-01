@@ -14,6 +14,24 @@ export const redirectUri = Joi.string()
 
 export const userId = Joi.number().required().description('유저 식별자');
 
+export const username = Joi.string().required().description('유저명');
+
+export const profileImageUrl = Joi.string()
+  .required()
+  .description('프로필 사진의 URL');
+
+export const userScore = Joi.number().required().description('점수');
+
+export const userRanking = Joi.number()
+  .allow(null)
+  .required()
+  .description('순위');
+
+export const userPrevRanking = Joi.number()
+  .allow(null)
+  .required()
+  .description('이전 순위');
+
 export const accessTokenExp = Joi.number()
   .required()
   .description('엑세스 토큰 남은 시간');
