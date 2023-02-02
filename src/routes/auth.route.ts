@@ -7,6 +7,7 @@ const authRouter = Router();
 
 authRouter
   .get('/check', authorize, AuthController.check)
+  .get('/verify', AuthController.verify)
   .post('/logout', AuthController.logout)
   .post('/login/kakao', authController.login)
   .post('/unregister/kakao', authorize, authController.unregister);

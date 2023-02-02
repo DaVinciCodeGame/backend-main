@@ -22,6 +22,40 @@ export default class AuthService {
     this.usersRepository = new UsersRepository();
   }
 
+  static async verify(authorization: string | undefined) {
+    if (!authorization)
+      throw badRequest('인증 정보가 유효하지 않습니다.', '헤더 없음');
+
+    const [type, credentials] = authorization.split(' ');
+
+    if (type !== 'Bearer')
+      throw badRequest(
+        '인증 정보가 유효하지 않습니다.',
+        '타입이 Bearer가 아님'
+      );
+
+    if (!credentials)
+      throw badRequest('인증 정보가 유효하지 않습니다.', '토큰이 없음');
+
+    let payload;
+
+    try {
+      payload = jwt.verify(credentials, env.JWT_SECRET);
+    } catch (err) {
+      throw badRequest('인증 정보가 유효하지 않습니다.', '유효하지 않은 토큰');
+    }
+
+    if (
+      typeof payload === 'string' ||
+      typeof payload.userId !== 'number' ||
+      !payload.exp
+    )
+      throw badRequest(
+        '인증 정보가 유효하지 않습니다.',
+        '내용이 유효하지 않음'
+      );
+  }
+
   async authenticateWithKakao(code: string, redirectUri: string) {
     const {
       data: { access_token: accessToken },

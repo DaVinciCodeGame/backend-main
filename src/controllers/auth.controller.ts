@@ -41,6 +41,18 @@ export default class AuthController {
     }
   };
 
+  static verify: RequestHandler = async (req, res, next) => {
+    try {
+      const { authorization } = req.headers;
+
+      await AuthService.verify(authorization);
+
+      res.status(204).send();
+    } catch (err) {
+      next(err);
+    }
+  };
+
   login: RequestHandler = async (req, res, next) => {
     try {
       const { code, 'redirect-uri': redirectUri } =
