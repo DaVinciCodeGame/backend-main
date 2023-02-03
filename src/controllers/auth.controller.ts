@@ -1,4 +1,4 @@
-import { RequestHandler } from 'express';
+import { CookieOptions, RequestHandler } from 'express';
 import AuthService from '../services/auth.service';
 import {
   loginValidator,
@@ -58,19 +58,22 @@ export default class AuthController {
       const { code, 'redirect-uri': redirectUri } =
         await loginValidator.reqQuery.validateAsync(req.query);
 
-      const { isFirstTime, accessToken } =
+      const { isFirstTime, accessToken, refreshToken } =
         await this.authService.authenticateWithKakao(code, redirectUri);
 
       await loginValidator.resCookie.validateAsync({ accessToken });
 
+      const cookieOptions: CookieOptions = {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        maxAge: 60 * 60 * 1000,
+        domain: '.davinci-code.online',
+      };
+
       res
-        .cookie('accessToken', accessToken, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          maxAge: 60 * 60 * 1000,
-          domain: '.davinci-code.online',
-        })
+        .cookie('accessToken', accessToken, cookieOptions)
+        .cookie('refreshToken', refreshToken, cookieOptions)
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
     } catch (err) {
