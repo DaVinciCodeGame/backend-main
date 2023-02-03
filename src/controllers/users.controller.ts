@@ -13,6 +13,20 @@ export default class UsersController {
     this.usersService = new UsersService();
   }
 
+  read: RequestHandler = async (req, res, next) => {
+    try {
+      const { userId } = req.params;
+
+      if (!userId) throw new Error();
+
+      const userInfo = await this.usersService.getUserInfo(Number(userId));
+
+      res.status(200).json(userInfo);
+    } catch (err) {
+      next(err);
+    }
+  };
+
   readMyInfo: RequestHandler = async (req, res, next) => {
     try {
       const { userId } = await readValidator.resLocals.validateAsync(
