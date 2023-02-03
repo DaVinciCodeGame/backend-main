@@ -1,4 +1,4 @@
-import { badRequest } from '@hapi/boom';
+import { unauthorized } from '@hapi/boom';
 import { RequestHandler } from 'express';
 import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import env from '../config/env';
@@ -9,7 +9,7 @@ const authorize: RequestHandler = async (req, res, next) => {
 
   try {
     if (!accessToken)
-      throw badRequest('인증 정보가 유효하지 않습니다.', '쿠키 없음');
+      throw unauthorized('인증 정보가 유효하지 않습니다.', '쿠키 없음');
 
     let payload: string | jwt.JwtPayload | null;
 
@@ -17,7 +17,7 @@ const authorize: RequestHandler = async (req, res, next) => {
       payload = jwt.verify(accessToken, env.JWT_SECRET);
     } catch (err) {
       if (!(err instanceof TokenExpiredError)) {
-        throw badRequest('인증 정보가 유효하지 않습니다.', '엑세스 토큰');
+        throw unauthorized('인증 정보가 유효하지 않습니다.', '엑세스 토큰');
       }
 
       payload = jwt.decode(accessToken);
@@ -27,18 +27,18 @@ const authorize: RequestHandler = async (req, res, next) => {
         typeof payload === 'string' ||
         typeof payload.userId !== 'number'
       ) {
-        throw badRequest('인증 정보가 유효하지 않습니다.', '페이로드');
+        throw unauthorized('인증 정보가 유효하지 않습니다.', '페이로드');
       }
 
       const usersRepository = new UsersRepository();
       const user = await usersRepository.findOneByUserId(payload.userId);
 
       if (!user) {
-        throw badRequest('인증 정보가 유효하지 않습니다.', '유저 정보 없음');
+        throw unauthorized('인증 정보가 유효하지 않습니다.', '유저 정보 없음');
       }
 
       if (user.refreshToken !== refreshToken) {
-        throw badRequest('인증 정보가 유효하지 않습니다.', '리프레시 토큰');
+        throw unauthorized('인증 정보가 유효하지 않습니다.', '리프레시 토큰');
       }
 
       const newAccessToken = jwt.sign(
@@ -63,7 +63,7 @@ const authorize: RequestHandler = async (req, res, next) => {
       typeof payload.userId !== 'number' ||
       !payload.exp
     )
-      throw badRequest('인증 정보가 유효하지 않습니다.', '페이로드');
+      throw unauthorized('인증 정보가 유효하지 않습니다.', '페이로드');
 
     res.locals.userId = payload.userId;
     res.locals.accessTokenExp = payload.exp * 1000 - Date.now();
