@@ -21,7 +21,6 @@ export default class AuthController {
           secure: true,
           sameSite: 'none',
           domain: '.davinci-code.online',
-          path: '/',
         })
         .status(204)
         .send();
@@ -101,7 +100,6 @@ export default class AuthController {
           secure: true,
           sameSite: 'none',
           domain: '.davinci-code.online',
-          path: '/',
         })
         .status(204)
         .send();
