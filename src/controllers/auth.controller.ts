@@ -20,8 +20,12 @@ export default class AuthController {
     this.authService = new AuthService();
   }
 
-  static logout: RequestHandler = async (req, res, next) => {
+  logout: RequestHandler = async (req, res, next) => {
     try {
+      const { userId } = res.locals;
+
+      this.authService.logout(userId);
+
       res.clearCookie('accessToken', cookieOptions).status(204).send();
     } catch (err) {
       next(err);

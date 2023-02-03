@@ -127,6 +127,14 @@ export default class AuthService {
     return { isFirstTime, accessToken, refreshToken };
   }
 
+  async logout(userId: number) {
+    const user = await this.usersRepository.findOneByUserId(userId);
+
+    if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
+
+    return this.usersRepository.updateRefreshToken(user, null);
+  }
+
   async unregisterFromKakao(userId: number, code: string, redirectUri: string) {
     const user = await this.usersRepository.findOneByUserId(userId);
 
