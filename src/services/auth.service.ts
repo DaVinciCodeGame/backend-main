@@ -115,7 +115,7 @@ export default class AuthService {
     }
 
     const accessToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
-      expiresIn: '1h',
+      expiresIn: '1s',
     });
 
     const refreshToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
