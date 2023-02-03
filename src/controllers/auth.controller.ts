@@ -26,7 +26,11 @@ export default class AuthController {
 
       this.authService.logout(userId);
 
-      res.clearCookie('accessToken', cookieOptions).status(204).send();
+      res
+        .clearCookie('accessToken', cookieOptions)
+        .clearCookie('refreshToken', cookieOptions)
+        .status(204)
+        .send();
     } catch (err) {
       next(err);
     }
@@ -90,7 +94,11 @@ export default class AuthController {
 
       await this.authService.unregisterFromKakao(userId, code, redirectUri);
 
-      res.clearCookie('accessToken', cookieOptions).status(204).send();
+      res
+        .clearCookie('accessToken', cookieOptions)
+        .clearCookie('refreshToken', cookieOptions)
+        .status(204)
+        .send();
     } catch (err) {
       next(err);
     }
