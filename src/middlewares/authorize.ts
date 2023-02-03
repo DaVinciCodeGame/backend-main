@@ -1,6 +1,6 @@
 import { badRequest } from '@hapi/boom';
 import { RequestHandler } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import env from '../config/env';
 
 const authorize: RequestHandler = async (req, res, next) => {
@@ -15,7 +15,14 @@ const authorize: RequestHandler = async (req, res, next) => {
     try {
       payload = jwt.verify(accessToken, env.JWT_SECRET);
     } catch (err) {
-      throw badRequest('인증 정보가 유효하지 않습니다.', '유효하지 않은 토큰');
+      if (err instanceof TokenExpiredError) {
+        throw badRequest('토큰이 만료됐어요..................................');
+      } else {
+        throw badRequest(
+          '인증 정보가 유효하지 않습니다.',
+          '유효하지 않은 토큰'
+        );
+      }
     }
 
     if (
