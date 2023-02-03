@@ -118,7 +118,11 @@ export default class AuthService {
       expiresIn: '1h',
     });
 
-    const refreshToken = '';
+    const refreshToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
+      expiresIn: '7d',
+    });
+
+    await this.usersRepository.updateRefreshToken(user, refreshToken);
 
     return { isFirstTime, accessToken, refreshToken };
   }
