@@ -45,6 +45,6 @@ export default class UsersRepository extends Repository<User> {
   }
 
   delete(user: User) {
-    return this.repository.delete(user);
+    return this.repository.remove(user);
   }
 }
