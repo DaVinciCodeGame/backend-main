@@ -44,7 +44,7 @@ const authorize: RequestHandler = async (req, res, next) => {
       const newAccessToken = jwt.sign(
         { userId: payload.userId },
         env.JWT_SECRET,
-        { expiresIn: '1s' }
+        { expiresIn: '1h' }
       );
 
       res.cookie('accessToken', newAccessToken, {
