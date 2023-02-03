@@ -114,7 +114,7 @@ export default class AuthService {
       isFirstTime = true;
     }
 
-    const accessToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
+    const accessToken = jwt.sign({ userId: user.userId }, 'FAKE_SECRET', {
       expiresIn: '1s',
     });
 
