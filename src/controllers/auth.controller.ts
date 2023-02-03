@@ -67,13 +67,15 @@ export default class AuthController {
         httpOnly: true,
         secure: true,
         sameSite: 'none',
-        maxAge: 60 * 60 * 1000,
         domain: '.davinci-code.online',
       };
 
       res
-        .cookie('accessToken', accessToken, cookieOptions)
-        .cookie('refreshToken', refreshToken, cookieOptions)
+        .cookie('accessToken', accessToken, {
+          ...cookieOptions,
+          maxAge: 60 * 60 * 1000,
+        })
+        .cookie('refreshToken', refreshToken, { ...cookieOptions })
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
     } catch (err) {
