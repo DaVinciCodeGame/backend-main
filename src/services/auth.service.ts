@@ -118,7 +118,9 @@ export default class AuthService {
       expiresIn: '1h',
     });
 
-    return { isFirstTime, accessToken };
+    const refreshToken = '';
+
+    return { isFirstTime, accessToken, refreshToken };
   }
 
   async unregisterFromKakao(userId: number, code: string, redirectUri: string) {
