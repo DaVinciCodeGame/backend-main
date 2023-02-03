@@ -16,3 +16,5 @@ const verifyApiKey: RequestHandler = async (req, res, next) => {
     next(err);
   }
 };
+
+export default verifyApiKey;
