@@ -8,7 +8,7 @@ const usersRouter = Router();
 const usersController = new UsersController();
 
 usersRouter
-  .get('/me', authorize, usersController.read)
+  .get('/me', authorize, usersController.readMyInfo)
   .get('/', usersController.readMany)
   .put(
     '/me',
