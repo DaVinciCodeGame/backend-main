@@ -75,7 +75,10 @@ export default class AuthController {
           ...cookieOptions,
           maxAge: 60 * 60 * 1000,
         })
-        .cookie('refreshToken', refreshToken, { ...cookieOptions })
+        .cookie('refreshToken', refreshToken, {
+          ...cookieOptions,
+          maxAge: 7 * 24 * 60 * 60 * 1000,
+        })
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
     } catch (err) {
