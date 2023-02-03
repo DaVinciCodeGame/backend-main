@@ -118,7 +118,11 @@ export default class AuthService {
       expiresIn: '1h',
     });
 
-    const refreshToken = '';
+    const refreshToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
+      expiresIn: '7d',
+    });
+
+    await this.usersRepository.updateRefreshToken(user, refreshToken);
 
     return { isFirstTime, accessToken, refreshToken };
   }
@@ -128,7 +132,7 @@ export default class AuthService {
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
-    await Promise.all([
+    return Promise.all([
       this.usersRepository.delete(user),
       axios
         .post('https://kauth.kakao.com/oauth/token', null, {
