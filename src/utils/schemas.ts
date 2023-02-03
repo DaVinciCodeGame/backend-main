@@ -14,7 +14,7 @@ export const redirectUri = Joi.string()
 
 export const userId = Joi.number().required().description('유저 식별자');
 
-export const username = Joi.string().required().description('유저명');
+export const username = Joi.string().description('유저명');
 
 export const profileImageUrl = Joi.string()
   .required()

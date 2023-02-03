@@ -13,5 +13,5 @@ export const readManyValidator = {
 export const updateValidator = {
   reqBody: Joi.object().keys({ username }).required(),
   resLocals: Joi.object().keys({ userId, accessTokenExp }).required(),
-  reqFile: Joi.object<Express.Multer.File>().required(),
+  reqFile: Joi.object<Express.Multer.File>(),
 };
