@@ -25,5 +25,5 @@ export class User {
   prevRanking?: number;
 
   @Column({ nullable: true })
-  refreshToken?: string;
+  refreshToken?: string | null;
 }

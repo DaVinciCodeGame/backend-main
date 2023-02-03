@@ -6,6 +6,13 @@ import {
   checkTokenValidator,
 } from '../validation/auth.validation';
 
+const cookieOptions: CookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: 'none',
+  domain: '.davinci-code.online',
+};
+
 export default class AuthController {
   authService: AuthService;
 
@@ -13,16 +20,15 @@ export default class AuthController {
     this.authService = new AuthService();
   }
 
-  static logout: RequestHandler = async (req, res, next) => {
+  logout: RequestHandler = async (req, res, next) => {
     try {
+      const { userId } = res.locals;
+
+      this.authService.logout(userId);
+
       res
-        .clearCookie('accessToken', {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          domain: '.davinci-code.online',
-          path: '/',
-        })
+        .clearCookie('accessToken', cookieOptions)
+        .clearCookie('refreshToken', cookieOptions)
         .status(204)
         .send();
     } catch (err) {
@@ -63,13 +69,6 @@ export default class AuthController {
 
       await loginValidator.resCookie.validateAsync({ accessToken });
 
-      const cookieOptions: CookieOptions = {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'none',
-        domain: '.davinci-code.online',
-      };
-
       res
         .cookie('accessToken', accessToken, {
           ...cookieOptions,
@@ -96,13 +95,8 @@ export default class AuthController {
       await this.authService.unregisterFromKakao(userId, code, redirectUri);
 
       res
-        .clearCookie('accessToken', {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          domain: '.davinci-code.online',
-          path: '/',
-        })
+        .clearCookie('accessToken', cookieOptions)
+        .clearCookie('refreshToken', cookieOptions)
         .status(204)
         .send();
     } catch (err) {

@@ -48,7 +48,7 @@ export default class UsersRepository extends Repository<User> {
     return this.repository.remove(user);
   }
 
-  updateRefreshToken(user: User, refreshToken: string) {
+  updateRefreshToken(user: User, refreshToken: string | null) {
     return this.repository.update(user.userId, { refreshToken });
   }
 }

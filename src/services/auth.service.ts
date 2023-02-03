@@ -114,7 +114,7 @@ export default class AuthService {
       isFirstTime = true;
     }
 
-    const accessToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
+    const accessToken = jwt.sign({ userId: user.userId }, 'FAKE_SECRET', {
       expiresIn: '1s',
     });
 
@@ -125,6 +125,14 @@ export default class AuthService {
     await this.usersRepository.updateRefreshToken(user, refreshToken);
 
     return { isFirstTime, accessToken, refreshToken };
+  }
+
+  async logout(userId: number) {
+    const user = await this.usersRepository.findOneByUserId(userId);
+
+    if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
+
+    return this.usersRepository.updateRefreshToken(user, null);
   }
 
   async unregisterFromKakao(userId: number, code: string, redirectUri: string) {
