@@ -55,7 +55,7 @@ const authorize: RequestHandler = async (req, res, next) => {
         maxAge: 60 * 60 * 1000,
       });
 
-      payload = jwt.verify(accessToken, env.JWT_SECRET);
+      payload = jwt.verify(newAccessToken, env.JWT_SECRET);
     }
 
     if (
