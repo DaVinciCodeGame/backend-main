@@ -12,6 +12,7 @@ function validate() {
     AWS_S3_SECRET_ACCESS_KEY: string;
     AWS_S3_BUCKET_NAME: string;
     KAKAO_ADMIN_KEY: string;
+    API_KEY: string;
   }>()
     .keys({
       PORT: Joi.string().required(),
@@ -23,6 +24,7 @@ function validate() {
       AWS_S3_SECRET_ACCESS_KEY: Joi.string().required(),
       AWS_S3_BUCKET_NAME: Joi.string().required(),
       KAKAO_ADMIN_KEY: Joi.string().required(),
+      API_KEY: Joi.string().required(),
     })
     .unknown()
     .validate(process.env);
