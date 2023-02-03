@@ -24,6 +24,6 @@ export class User {
   @Column({ nullable: true })
   prevRanking?: number;
 
-  @Column({ nullable: true })
+  @Column({ type: 'varchar', nullable: true })
   refreshToken?: string | null;
 }
