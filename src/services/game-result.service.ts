@@ -44,7 +44,7 @@ export default class GameResultService {
           userId: updatedUser.userId,
           username: updatedUser.username,
           score: updatedUser.score,
-          change: table[index],
+          change: updatedUser.score - user.score,
         };
 
         return result;
