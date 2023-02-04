@@ -43,6 +43,7 @@ export default class GameResultService {
         const result = {
           userId: updatedUser.userId,
           username: updatedUser.username,
+          prevScore: user.score,
           score: updatedUser.score,
           change: updatedUser.score - user.score,
         };
