@@ -51,4 +51,8 @@ export default class UsersRepository extends Repository<User> {
   updateRefreshToken(user: User, refreshToken: string | null) {
     return this.repository.update(user.userId, { refreshToken });
   }
+
+  updateScore({ userId }: User, change: number) {
+    return this.repository.increment({ userId }, 'score', change);
+  }
 }
