@@ -1,10 +1,17 @@
-import { RequestHandler } from 'express';
+import { CookieOptions, RequestHandler } from 'express';
 import AuthService from '../services/auth.service';
 import {
   loginValidator,
   unregisterValidator,
   checkTokenValidator,
 } from '../validation/auth.validation';
+
+const cookieOptions: CookieOptions = {
+  httpOnly: true,
+  secure: true,
+  sameSite: 'none',
+  domain: '.davinci-code.online',
+};
 
 export default class AuthController {
   authService: AuthService;
@@ -13,16 +20,15 @@ export default class AuthController {
     this.authService = new AuthService();
   }
 
-  static logout: RequestHandler = async (req, res, next) => {
+  logout: RequestHandler = async (req, res, next) => {
     try {
+      const { userId } = res.locals;
+
+      this.authService.logout(userId);
+
       res
-        .clearCookie('accessToken', {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          domain: '.davinci-code.online',
-          path: '/',
-        })
+        .clearCookie('accessToken', cookieOptions)
+        .clearCookie('refreshToken', cookieOptions)
         .status(204)
         .send();
     } catch (err) {
@@ -41,23 +47,36 @@ export default class AuthController {
     }
   };
 
+  static verify: RequestHandler = async (req, res, next) => {
+    try {
+      const { authorization } = req.headers;
+
+      await AuthService.verify(authorization);
+
+      res.status(204).send();
+    } catch (err) {
+      next(err);
+    }
+  };
+
   login: RequestHandler = async (req, res, next) => {
     try {
       const { code, 'redirect-uri': redirectUri } =
         await loginValidator.reqQuery.validateAsync(req.query);
 
-      const { isFirstTime, accessToken } =
+      const { isFirstTime, accessToken, refreshToken } =
         await this.authService.authenticateWithKakao(code, redirectUri);
 
       await loginValidator.resCookie.validateAsync({ accessToken });
 
       res
         .cookie('accessToken', accessToken, {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
+          ...cookieOptions,
           maxAge: 60 * 60 * 1000,
-          domain: '.davinci-code.online',
+        })
+        .cookie('refreshToken', refreshToken, {
+          ...cookieOptions,
+          maxAge: 7 * 24 * 60 * 60 * 1000,
         })
         .status(isFirstTime ? 201 : 200)
         .json({ message: isFirstTime ? '가입 완료' : '로그인 완료' });
@@ -76,13 +95,8 @@ export default class AuthController {
       await this.authService.unregisterFromKakao(userId, code, redirectUri);
 
       res
-        .clearCookie('accessToken', {
-          httpOnly: true,
-          secure: true,
-          sameSite: 'none',
-          domain: '.davinci-code.online',
-          path: '/',
-        })
+        .clearCookie('accessToken', cookieOptions)
+        .clearCookie('refreshToken', cookieOptions)
         .status(204)
         .send();
     } catch (err) {

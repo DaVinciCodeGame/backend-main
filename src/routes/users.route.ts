@@ -7,7 +7,7 @@ const usersRouter = Router();
 const usersController = new UsersController();
 
 usersRouter
-  .get('/me', usersController.read)
+  .get('/me', authorize, usersController.readMyInfo)
   .get('/', usersController.readMany)
   .put(
     '/me',

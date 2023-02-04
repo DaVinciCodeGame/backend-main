@@ -1,21 +1,61 @@
-import { badRequest } from '@hapi/boom';
+import { unauthorized } from '@hapi/boom';
 import { RequestHandler } from 'express';
-import jwt from 'jsonwebtoken';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
 import env from '../config/env';
+import UsersRepository from '../repositories/users.repository';
 
 const authorize: RequestHandler = async (req, res, next) => {
-  const { accessToken } = req.cookies;
+  const { accessToken, refreshToken } = req.cookies;
 
   try {
     if (!accessToken)
-      throw badRequest('인증 정보가 유효하지 않습니다.', '쿠키 없음');
+      throw unauthorized('인증 정보가 유효하지 않습니다.', '쿠키 없음');
 
-    let payload;
+    let payload: string | jwt.JwtPayload | null;
 
     try {
       payload = jwt.verify(accessToken, env.JWT_SECRET);
     } catch (err) {
-      throw badRequest('인증 정보가 유효하지 않습니다.', '유효하지 않은 토큰');
+      if (!(err instanceof TokenExpiredError)) {
+        throw unauthorized('인증 정보가 유효하지 않습니다.', '엑세스 토큰');
+      }
+
+      payload = jwt.decode(accessToken);
+
+      if (
+        !payload ||
+        typeof payload === 'string' ||
+        typeof payload.userId !== 'number'
+      ) {
+        throw unauthorized('인증 정보가 유효하지 않습니다.', '페이로드');
+      }
+
+      const usersRepository = new UsersRepository();
+      const user = await usersRepository.findOneByUserId(payload.userId);
+
+      if (!user) {
+        throw unauthorized('인증 정보가 유효하지 않습니다.', '유저 정보 없음');
+      }
+
+      if (user.refreshToken !== refreshToken) {
+        throw unauthorized('인증 정보가 유효하지 않습니다.', '리프레시 토큰');
+      }
+
+      const newAccessToken = jwt.sign(
+        { userId: payload.userId },
+        env.JWT_SECRET,
+        { expiresIn: '1h' }
+      );
+
+      res.cookie('accessToken', newAccessToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: 'none',
+        domain: '.davinci-code.online',
+        maxAge: 60 * 60 * 1000,
+      });
+
+      payload = jwt.verify(newAccessToken, env.JWT_SECRET);
     }
 
     if (
@@ -23,10 +63,7 @@ const authorize: RequestHandler = async (req, res, next) => {
       typeof payload.userId !== 'number' ||
       !payload.exp
     )
-      throw badRequest(
-        '인증 정보가 유효하지 않습니다.',
-        '내용이 유효하지 않음'
-      );
+      throw unauthorized('인증 정보가 유효하지 않습니다.', '페이로드');
 
     res.locals.userId = payload.userId;
     res.locals.accessTokenExp = payload.exp * 1000 - Date.now();

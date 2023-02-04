@@ -22,9 +22,43 @@ export default class AuthService {
     this.usersRepository = new UsersRepository();
   }
 
+  static async verify(authorization: string | undefined) {
+    if (!authorization)
+      throw badRequest('인증 정보가 유효하지 않습니다.', '헤더 없음');
+
+    const [type, credentials] = authorization.split(' ');
+
+    if (type !== 'Bearer')
+      throw badRequest(
+        '인증 정보가 유효하지 않습니다.',
+        '타입이 Bearer가 아님'
+      );
+
+    if (!credentials)
+      throw badRequest('인증 정보가 유효하지 않습니다.', '토큰이 없음');
+
+    let payload;
+
+    try {
+      payload = jwt.verify(credentials, env.JWT_SECRET);
+    } catch (err) {
+      throw badRequest('인증 정보가 유효하지 않습니다.', '유효하지 않은 토큰');
+    }
+
+    if (
+      typeof payload === 'string' ||
+      typeof payload.userId !== 'number' ||
+      !payload.exp
+    )
+      throw badRequest(
+        '인증 정보가 유효하지 않습니다.',
+        '내용이 유효하지 않음'
+      );
+  }
+
   async authenticateWithKakao(code: string, redirectUri: string) {
     const {
-      data: { access_token: accessToken },
+      data: { access_token: kakaoAccessToken },
     } = await axios.post('https://kauth.kakao.com/oauth/token', null, {
       params: {
         grant_type: 'authorization_code',
@@ -47,45 +81,58 @@ export default class AuthService {
     }: { data: KakaoUserInfo } = await axios.get(
       'https://kapi.kakao.com/v2/user/me',
       {
-        headers: { Authorization: `Bearer ${accessToken}` },
+        headers: { Authorization: `Bearer ${kakaoAccessToken}` },
         params: { secure_resource: true, property_keys: [] },
       }
     );
 
-    const existUser = await this.usersRepository.findOneByKakaoId(kakaoId);
+    let user = await this.usersRepository.findOneByKakaoId(kakaoId);
 
-    if (existUser)
-      return {
-        isFirstTime: false,
-        accessToken: jwt.sign({ userId: existUser.userId }, env.JWT_SECRET, {
-          expiresIn: '1h',
-        }),
-      };
+    let isFirstTime = false;
 
-    const {
-      data,
-      headers: { 'content-type': contentType },
-    } = await axios.get(kakaoProfileImageUrl, { responseType: 'arraybuffer' });
+    if (!user) {
+      const {
+        data,
+        headers: { 'content-type': contentType },
+      } = await axios.get(kakaoProfileImageUrl, {
+        responseType: 'arraybuffer',
+      });
 
-    if (!data || !contentType)
-      throw badRequest('카카오 계정의 정보가 잘못됐습니다.');
+      if (!data || !contentType)
+        throw badRequest('카카오 계정의 정보가 잘못됐습니다.');
 
-    const image = Buffer.from(data);
+      const image = Buffer.from(data);
 
-    const profileImageUrl = await putObject(image, contentType);
+      const profileImageUrl = await putObject(image, contentType);
 
-    const newUser = await this.usersRepository.create({
-      kakaoId,
-      username,
-      profileImageUrl,
+      user = await this.usersRepository.create({
+        kakaoId,
+        username,
+        profileImageUrl,
+      });
+
+      isFirstTime = true;
+    }
+
+    const accessToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
+      expiresIn: '1h',
     });
 
-    return {
-      isFirstTime: true,
-      accessToken: jwt.sign({ userId: newUser.userId }, env.JWT_SECRET, {
-        expiresIn: '1h',
-      }),
-    };
+    const refreshToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
+      expiresIn: '7d',
+    });
+
+    await this.usersRepository.updateRefreshToken(user, refreshToken);
+
+    return { isFirstTime, accessToken, refreshToken };
+  }
+
+  async logout(userId: number) {
+    const user = await this.usersRepository.findOneByUserId(userId);
+
+    if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
+
+    return this.usersRepository.updateRefreshToken(user, null);
   }
 
   async unregisterFromKakao(userId: number, code: string, redirectUri: string) {
@@ -93,7 +140,7 @@ export default class AuthService {
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
-    await Promise.all([
+    return Promise.all([
       this.usersRepository.delete(user),
       axios
         .post('https://kauth.kakao.com/oauth/token', null, {
