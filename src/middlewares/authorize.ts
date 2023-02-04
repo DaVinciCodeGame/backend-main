@@ -8,8 +8,7 @@ const authorize: RequestHandler = async (req, res, next) => {
   const { accessToken, refreshToken } = req.cookies;
 
   try {
-    if (!accessToken)
-      throw unauthorized('인증 정보가 유효하지 않습니다.', '쿠키 없음');
+    if (!accessToken) throw unauthorized('인증 정보가 유효하지 않습니다.');
 
     let payload: string | jwt.JwtPayload | null;
 
@@ -17,7 +16,7 @@ const authorize: RequestHandler = async (req, res, next) => {
       payload = jwt.verify(accessToken, env.JWT_SECRET);
     } catch (err) {
       if (!(err instanceof TokenExpiredError)) {
-        throw unauthorized('인증 정보가 유효하지 않습니다.', '엑세스 토큰');
+        throw unauthorized('인증 정보가 유효하지 않습니다.');
       }
 
       payload = jwt.decode(accessToken);
@@ -27,18 +26,18 @@ const authorize: RequestHandler = async (req, res, next) => {
         typeof payload === 'string' ||
         typeof payload.userId !== 'number'
       ) {
-        throw unauthorized('인증 정보가 유효하지 않습니다.', '페이로드');
+        throw unauthorized('인증 정보가 유효하지 않습니다.');
       }
 
       const usersRepository = new UsersRepository();
       const user = await usersRepository.findOneByUserId(payload.userId);
 
       if (!user) {
-        throw unauthorized('인증 정보가 유효하지 않습니다.', '유저 정보 없음');
+        throw unauthorized('인증 정보가 유효하지 않습니다.');
       }
 
       if (user.refreshToken !== refreshToken) {
-        throw unauthorized('인증 정보가 유효하지 않습니다.', '리프레시 토큰');
+        throw unauthorized('인증 정보가 유효하지 않습니다.');
       }
 
       const newAccessToken = jwt.sign(
@@ -63,13 +62,15 @@ const authorize: RequestHandler = async (req, res, next) => {
       typeof payload.userId !== 'number' ||
       !payload.exp
     )
-      throw unauthorized('인증 정보가 유효하지 않습니다.', '페이로드');
+      throw unauthorized('인증 정보가 유효하지 않습니다.');
 
     res.locals.userId = payload.userId;
     res.locals.accessTokenExp = payload.exp * 1000 - Date.now();
 
     next();
   } catch (err) {
+    console.log(err);
+
     next(err);
   }
 };
