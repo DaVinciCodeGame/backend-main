@@ -7,4 +7,18 @@ export default class GameResultController {
   constructor() {
     this.gameResultService = new GameResultService();
   }
+
+  create: RequestHandler = async (req, res, next) => {
+    try {
+      const gameResult = req.body;
+
+      const updateResult = await this.gameResultService.applyResultToUsers(
+        gameResult
+      );
+
+      res.status(200).json(updateResult);
+    } catch (err) {
+      next(err);
+    }
+  };
 }
