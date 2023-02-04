@@ -51,4 +51,13 @@ export default class UsersRepository extends Repository<User> {
   updateRefreshToken(user: User, refreshToken: string | null) {
     return this.repository.update(user.userId, { refreshToken });
   }
+
+  updateScore({ userId }: User, change: number) {
+    return this.repository
+      .createQueryBuilder()
+      .update()
+      .set({ score: () => `GREATEST(score + ${change}, 0)` })
+      .where('userId = :userId', { userId })
+      .execute();
+  }
 }
