@@ -32,12 +32,22 @@ export default class GameResultService {
       users.map(async (user, index) => {
         if (!user) throw badRequest('해당하는 유저 정보가 없습니다.');
 
-        const { raw } = await this.userRepository.updateScore(
-          user,
-          table[index]
+        await this.userRepository.updateScore(user, table[index]);
+
+        const updatedUser = await this.userRepository.findOneByUserId(
+          user.userId
         );
 
-        return raw;
+        if (!updatedUser) throw Error('수정된 유저 정보를 찾을 수 없음');
+
+        const result = {
+          userId: updatedUser.userId,
+          username: updatedUser.username,
+          score: updatedUser.score,
+          change: table[index],
+        };
+
+        return result;
       })
     );
   }
