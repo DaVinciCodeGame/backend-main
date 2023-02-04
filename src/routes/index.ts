@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import authorize from '../middlewares/authorize';
 import authRouter from './auth.route';
 import privateRouter from './private.route';
 import usersRouter from './users.route';
