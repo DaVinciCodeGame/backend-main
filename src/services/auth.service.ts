@@ -16,7 +16,7 @@ type KakaoUserInfo = {
 };
 
 export default class AuthService {
-  usersRepository: UsersRepository;
+  private readonly usersRepository: UsersRepository;
 
   constructor() {
     this.usersRepository = new UsersRepository();
