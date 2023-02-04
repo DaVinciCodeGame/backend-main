@@ -14,7 +14,7 @@ const cookieOptions: CookieOptions = {
 };
 
 export default class AuthController {
-  authService: AuthService;
+  private readonly authService: AuthService;
 
   constructor() {
     this.authService = new AuthService();

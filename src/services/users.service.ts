@@ -5,7 +5,7 @@ import UsersRepository from '../repositories/users.repository';
 import { putObject } from '../utils/s3Manager';
 
 export default class UsersService {
-  usersRepository: UsersRepository;
+  private readonly usersRepository: UsersRepository;
 
   constructor() {
     this.usersRepository = new UsersRepository();

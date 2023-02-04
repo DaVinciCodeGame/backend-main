@@ -15,7 +15,7 @@ function getScoreChangeTable(playerCount: number) {
 }
 
 export default class GameResultService {
-  userRepository: UsersRepository;
+  private readonly userRepository: UsersRepository;
 
   constructor() {
     this.userRepository = new UsersRepository();

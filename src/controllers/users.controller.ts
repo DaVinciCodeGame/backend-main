@@ -7,7 +7,7 @@ import {
 } from '../validation/users.validation';
 
 export default class UsersController {
-  usersService: UsersService;
+  private readonly usersService: UsersService;
 
   constructor() {
     this.usersService = new UsersService();
