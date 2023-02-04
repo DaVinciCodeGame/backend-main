@@ -1,6 +1,4 @@
 import { badRequest } from '@hapi/boom';
-import axios from 'axios';
-import env from '../config/env';
 import UsersRepository from '../repositories/users.repository';
 import { putObject } from '../utils/s3Manager';
 
