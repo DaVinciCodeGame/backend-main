@@ -2,6 +2,7 @@ import mysqlDataSource from './config/mysql';
 import App from './app';
 import logger from './config/logger';
 import env from './config/env';
+import './config/leaderboard-scheduler';
 
 mysqlDataSource
   .initialize()
