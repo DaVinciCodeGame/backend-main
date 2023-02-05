@@ -33,7 +33,7 @@ export default class UsersRepository extends Repository<User> {
   }
 
   findAll() {
-    return this.repository.find();
+    return this.repository.find({ order: { ranking: 'ASC' } });
   }
 
   updateUsername(user: User, username: string) {
