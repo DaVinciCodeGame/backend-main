@@ -3,6 +3,7 @@ import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import express from 'express';
 import helmet from 'helmet';
+import env from './config/env';
 import logger from './config/logger';
 import errorHandler from './middlewares/error-handler';
 import morgan from './middlewares/morgan';
@@ -16,10 +17,7 @@ class App {
     this.app.use(
       cors({
         credentials: true,
-        origin: [
-          'https://frontend-delta-puce.vercel.app',
-          'http://localhost:3000',
-        ],
+        origin: env.ALLOWED_SITES.split(','),
       })
     );
     this.app.use(helmet());
