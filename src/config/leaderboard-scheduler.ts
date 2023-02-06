@@ -10,7 +10,8 @@ const job = schedule.scheduleJob('0 * * * *', async () => {
     ON r.userId = u.userId
     SET
       u.prevRanking = IF(u.ranking IS NULL, r.rn, u.ranking),
-      u.ranking = r.rn;`);
+      u.ranking = r.rn
+    WHERE scoreUpdatedAt IS NOT NULL;`);
 });
 
 export default job;
