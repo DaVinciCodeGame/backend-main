@@ -1,3 +1,4 @@
+import { IsNull, Not } from 'typeorm';
 import { User } from '../entity/User';
 import Repository from '../libs/base-repository';
 
@@ -33,7 +34,10 @@ export default class UsersRepository extends Repository<User> {
   }
 
   findAll() {
-    return this.repository.find({ order: { ranking: 'ASC' } });
+    return this.repository.find({
+      where: { ranking: Not(IsNull()) },
+      order: { ranking: 'ASC' },
+    });
   }
 
   updateUsername(user: User, username: string) {
@@ -52,11 +56,14 @@ export default class UsersRepository extends Repository<User> {
     return this.repository.update(user.userId, { refreshToken });
   }
 
-  updateScore({ userId }: User, change: number) {
+  updateScore({ userId }: User, change: number, updatedAt: Date) {
     return this.repository
       .createQueryBuilder()
       .update()
-      .set({ score: () => `GREATEST(score + ${change}, 0)` })
+      .set({
+        score: () => `GREATEST(score + ${change}, 0)`,
+        scoreUpdatedAt: updatedAt,
+      })
       .where('userId = :userId', { userId })
       .execute();
   }
