@@ -28,11 +28,13 @@ export default class GameResultService {
       gameResult.map((userId) => this.userRepository.findOneByUserId(userId))
     );
 
+    const updatedAt = new Date();
+
     return Promise.all(
       users.map(async (user, index) => {
         if (!user) throw badRequest('해당하는 유저 정보가 없습니다.');
 
-        await this.userRepository.updateScore(user, table[index]);
+        await this.userRepository.updateScore(user, table[index], updatedAt);
 
         const updatedUser = await this.userRepository.findOneByUserId(
           user.userId

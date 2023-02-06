@@ -26,4 +26,7 @@ export class User {
 
   @Column({ type: 'varchar', nullable: true })
   refreshToken?: string | null;
+
+  @Column({ type: 'datetime', precision: 3, nullable: true })
+  scoreUpdatedAt?: Date;
 }
