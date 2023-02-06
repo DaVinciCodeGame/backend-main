@@ -8,7 +8,9 @@ const job = schedule.scheduleJob('0 * * * *', async () => {
       FROM user
     ) r
     ON r.userId = u.userId
-    SET u.prevRanking = u.ranking, u.ranking = r.rn`);
+    SET
+      u.prevRanking = IF(u.ranking IS NULL, r.rn, u.ranking),
+      u.ranking = r.rn;`);
 });
 
 export default job;
