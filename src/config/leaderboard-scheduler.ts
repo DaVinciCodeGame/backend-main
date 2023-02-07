@@ -6,6 +6,7 @@ const job = schedule.scheduleJob('0 * * * *', async () => {
     INNER JOIN(
       SELECT userId, score, RANK() OVER(ORDER BY score DESC, scoreUpdatedAt) as rn
       FROM user
+      WHERE scoreUpdatedAt IS NOT NULL
     ) r
     ON r.userId = u.userId
     SET
