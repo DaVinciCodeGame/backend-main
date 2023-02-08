@@ -52,6 +52,10 @@ export default class UsersRepository extends Repository<User> {
     return this.repository.remove(user);
   }
 
+  softDelete(user: User) {
+    return this.repository.softRemove(user);
+  }
+
   updateRefreshToken(user: User, refreshToken: string | null) {
     return this.repository.update(user.userId, { refreshToken });
   }

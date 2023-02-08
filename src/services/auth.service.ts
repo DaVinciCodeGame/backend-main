@@ -141,7 +141,7 @@ export default class AuthService {
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
     return Promise.all([
-      this.usersRepository.delete(user),
+      this.usersRepository.softDelete(user),
       axios
         .post('https://kauth.kakao.com/oauth/token', null, {
           params: {
