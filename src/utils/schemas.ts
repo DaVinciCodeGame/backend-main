@@ -22,7 +22,7 @@ export const profileImageUrl = Joi.string()
 
 export const userScore = Joi.number().required().description('점수');
 
-export const scoreUpdatedAt = Joi.date().valid(null);
+export const scoreUpdatedAt = Joi.date().allow(null);
 
 export const userRanking = Joi.number()
   .allow(null)
