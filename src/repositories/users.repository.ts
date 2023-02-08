@@ -1,6 +1,8 @@
 import { IsNull, Not } from 'typeorm';
 import { User } from '../entity/User';
+import { UserView } from '../entity/UserView';
 import Repository from '../libs/base-repository';
+import mysqlDataSource from '../config/mysql';
 
 type UserParams = {
   kakaoId: number;
@@ -9,8 +11,12 @@ type UserParams = {
 };
 
 export default class UsersRepository extends Repository<User> {
+  private readonly viewRepository;
+
   constructor() {
     super(User);
+
+    this.viewRepository = mysqlDataSource.getRepository(UserView);
   }
 
   findOneByKakaoId(kakaoId: number) {
@@ -35,6 +41,12 @@ export default class UsersRepository extends Repository<User> {
 
   findAll() {
     return this.repository.find({});
+  }
+
+  findAllWithRanking() {
+    return this.viewRepository.find({
+      where: { scoreUpdatedAt: Not(IsNull()) },
+    });
   }
 
   updateUsername(user: User, username: string) {
