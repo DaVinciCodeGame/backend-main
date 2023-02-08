@@ -27,18 +27,11 @@ export const userRanking = Joi.number()
   .required()
   .description('순위');
 
-export const userPrevRanking = Joi.number()
-  .allow(null)
-  .required()
-  .description('이전 순위');
-
 export const userData = Joi.object().keys({
   userId,
   username,
   profileImageUrl,
   score: userScore,
-  ranking: userRanking,
-  prevRanking: userPrevRanking,
 });
 
 export const accessTokenExp = Joi.number()

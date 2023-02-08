@@ -18,12 +18,6 @@ export class User {
   @Column({ default: 0 })
   score!: number;
 
-  @Column({ nullable: true })
-  ranking?: number;
-
-  @Column({ nullable: true })
-  prevRanking?: number;
-
   @Column({ type: 'varchar', nullable: true })
   refreshToken?: string | null;
 

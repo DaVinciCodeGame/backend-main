@@ -34,10 +34,7 @@ export default class UsersRepository extends Repository<User> {
   }
 
   findAll() {
-    return this.repository.find({
-      where: { ranking: Not(IsNull()) },
-      order: { ranking: 'ASC' },
-    });
+    return this.repository.find({});
   }
 
   updateUsername(user: User, username: string) {
