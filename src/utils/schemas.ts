@@ -22,6 +22,8 @@ export const profileImageUrl = Joi.string()
 
 export const userScore = Joi.number().required().description('점수');
 
+export const scoreUpdatedAt = Joi.date().valid(null);
+
 export const userRanking = Joi.number()
   .allow(null)
   .required()
@@ -32,6 +34,8 @@ export const userData = Joi.object().keys({
   username,
   profileImageUrl,
   score: userScore,
+  ranking: userRanking,
+  scoreUpdatedAt,
 });
 
 export const accessTokenExp = Joi.number()
