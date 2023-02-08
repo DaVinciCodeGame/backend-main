@@ -10,37 +10,15 @@ export default class UsersService {
   }
 
   async getUserInfo(userId: number) {
-    const user = await this.usersRepository.findOneByUserId(userId);
+    const user = await this.usersRepository.findOneByUserIdWithRanking(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
-    return {
-      userId: user.userId,
-      username: user.username,
-      profileImageUrl: user.profileImageUrl,
-      score: user.score,
-      ranking: user.ranking,
-      prevRanking: user.prevRanking,
-    };
+    return user;
   }
 
-  async getLeaderboard() {
-    const users = await this.usersRepository.findAll();
-
-    const leaderboard = users.map(
-      ({ userId, username, profileImageUrl, score, ranking, prevRanking }) => {
-        return {
-          userId,
-          username,
-          profileImageUrl,
-          score,
-          ranking,
-          prevRanking,
-        };
-      }
-    );
-
-    return leaderboard;
+  getLeaderboard() {
+    return this.usersRepository.findAllWithRanking();
   }
 
   async updateProfile(

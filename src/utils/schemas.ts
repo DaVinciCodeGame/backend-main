@@ -22,15 +22,12 @@ export const profileImageUrl = Joi.string()
 
 export const userScore = Joi.number().required().description('점수');
 
+export const scoreUpdatedAt = Joi.date().valid(null);
+
 export const userRanking = Joi.number()
   .allow(null)
   .required()
   .description('순위');
-
-export const userPrevRanking = Joi.number()
-  .allow(null)
-  .required()
-  .description('이전 순위');
 
 export const userData = Joi.object().keys({
   userId,
@@ -38,7 +35,7 @@ export const userData = Joi.object().keys({
   profileImageUrl,
   score: userScore,
   ranking: userRanking,
-  prevRanking: userPrevRanking,
+  scoreUpdatedAt,
 });
 
 export const accessTokenExp = Joi.number()
