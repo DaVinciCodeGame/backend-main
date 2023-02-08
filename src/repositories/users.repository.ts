@@ -39,6 +39,10 @@ export default class UsersRepository extends Repository<User> {
     });
   }
 
+  findOneByUserIdWithRanking(userId: number) {
+    return this.viewRepository.findOne({ where: { userId } });
+  }
+
   findAll() {
     return this.repository.find({});
   }
