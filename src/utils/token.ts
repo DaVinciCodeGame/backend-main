@@ -1,3 +1,4 @@
+import { unauthorized } from '@hapi/boom';
 import jwt from 'jsonwebtoken';
 import env from '../config/env';
 
@@ -10,5 +11,11 @@ export function signRefreshToken(userId: number) {
 }
 
 export function verify(token: string) {
-  return jwt.verify(token, env.JWT_SECRET);
+  const payload = jwt.verify(token, env.JWT_SECRET);
+
+  if (typeof payload === 'string') {
+    throw unauthorized('토큰이 유효하지 않습니다.');
+  }
+
+  return payload;
 }
