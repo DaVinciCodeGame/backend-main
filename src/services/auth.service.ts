@@ -1,9 +1,9 @@
 import { badRequest } from '@hapi/boom';
 import axios from 'axios';
-import jwt from 'jsonwebtoken';
 import env from '../config/env';
 import UsersRepository from '../repositories/users.repository';
 import { putObject } from '../utils/s3Manager';
+import { signAccessToken, signRefreshToken, verify } from '../utils/token';
 
 type KakaoUserInfo = {
   id: number;
@@ -40,7 +40,7 @@ export default class AuthService {
     let payload;
 
     try {
-      payload = jwt.verify(credentials, env.JWT_SECRET);
+      payload = verify(credentials);
     } catch (err) {
       throw badRequest('인증 정보가 유효하지 않습니다.', '유효하지 않은 토큰');
     }
@@ -114,13 +114,9 @@ export default class AuthService {
       isFirstTime = true;
     }
 
-    const accessToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    const accessToken = signAccessToken(user.userId);
 
-    const refreshToken = jwt.sign({ userId: user.userId }, env.JWT_SECRET, {
-      expiresIn: '7d',
-    });
+    const refreshToken = signRefreshToken(user.userId);
 
     await this.usersRepository.updateRefreshToken(user, refreshToken);
 

@@ -1,17 +1,11 @@
-import { CookieOptions, RequestHandler } from 'express';
+import { RequestHandler } from 'express';
 import AuthService from '../services/auth.service';
+import cookieOptions from '../utils/cookie-options';
 import {
+  checkTokenValidator,
   loginValidator,
   unregisterValidator,
-  checkTokenValidator,
 } from '../validation/auth.validation';
-
-const cookieOptions: CookieOptions = {
-  httpOnly: true,
-  secure: true,
-  sameSite: 'none',
-  domain: '.davinci-code.online',
-};
 
 export default class AuthController {
   private readonly authService: AuthService;
