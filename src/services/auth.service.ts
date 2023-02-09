@@ -3,7 +3,11 @@ import axios from 'axios';
 import env from '../config/env';
 import UsersRepository from '../repositories/users.repository';
 import { putObject } from '../utils/s3Manager';
-import { signAccessToken, signRefreshToken, verify } from '../utils/token';
+import {
+  signAccessToken,
+  signRefreshToken,
+  verifyAccessToken,
+} from '../utils/token';
 
 type KakaoUserInfo = {
   id: number;
@@ -40,7 +44,7 @@ export default class AuthService {
     let payload;
 
     try {
-      payload = verify(credentials);
+      payload = verifyAccessToken(credentials);
     } catch (err) {
       throw badRequest('인증 정보가 유효하지 않습니다.', '유효하지 않은 토큰');
     }
