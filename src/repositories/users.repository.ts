@@ -34,9 +34,7 @@ export default class UsersRepository extends Repository<User> {
   }
 
   findOneByUserId(userId: number) {
-    return this.repository.findOne({
-      where: { userId },
-    });
+    return this.repository.findOne({ where: { userId } });
   }
 
   findOneByUserIdWithRanking(userId: number) {
