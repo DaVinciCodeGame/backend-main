@@ -52,7 +52,7 @@ const authorize: RequestHandler = async (req, res, next) => {
         maxAge: 60 * 60 * 1000,
       });
 
-      const { exp } = verify(accessToken);
+      const { exp } = verify(newAccessToken);
 
       if (!exp) throw new Error('새 액세스 토큰 발급 중 오류 발생');
 
