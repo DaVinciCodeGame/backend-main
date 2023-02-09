@@ -3,7 +3,11 @@ import { RequestHandler } from 'express';
 import mysqlDataSource from '../config/mysql';
 import { User } from '../entity/User';
 import cookieOptions from '../utils/cookie-options';
-import { signAccessToken, verify } from '../utils/token';
+import {
+  signAccessToken,
+  verifyAccessToken,
+  verifyRefreshToken,
+} from '../utils/token';
 
 const authorize: RequestHandler = async (req, res, next) => {
   const { accessToken, refreshToken } = req.cookies;
@@ -12,7 +16,7 @@ const authorize: RequestHandler = async (req, res, next) => {
     try {
       if (typeof accessToken !== 'string') throw new Error(); // 액세스 토큰이 없거나 문자열 타입이 아닐 때 리프레시 토큰 검증으로 이동
 
-      const { userId, exp } = verify(accessToken); // 액세스 토큰 검증, 오류 발생 시 리프레시 토큰 검증으로 이동
+      const { userId, exp } = verifyAccessToken(accessToken); // 액세스 토큰 검증, 오류 발생 시 리프레시 토큰 검증으로 이동
 
       if (typeof userId !== 'number' || !exp) throw new Error(); // 액세스 토큰의 내용이 유효하지 않으면 리프레시 토큰 검증으로 이동
 
@@ -30,7 +34,7 @@ const authorize: RequestHandler = async (req, res, next) => {
 
       // 리프레시 토큰 검증, 에러 발생 시 401 응답
       try {
-        userId = verify(refreshToken).userId;
+        userId = verifyRefreshToken(refreshToken).userId;
       } catch (err) {
         throw unauthorized('요청에 포함된 토큰이 유효하지 않습니다.');
       }
@@ -52,7 +56,7 @@ const authorize: RequestHandler = async (req, res, next) => {
         maxAge: 60 * 60 * 1000,
       });
 
-      const { exp } = verify(newAccessToken);
+      const { exp } = verifyAccessToken(newAccessToken);
 
       if (!exp) throw new Error('새 액세스 토큰 발급 중 오류 발생');
 
