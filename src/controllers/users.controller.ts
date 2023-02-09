@@ -33,7 +33,7 @@ export default class UsersController {
         res.locals
       );
 
-      const userInfo = await this.usersService.getUserInfo(userId);
+      const userInfo = await this.usersService.getUserInfoWithRanking(userId);
 
       await readValidator.resBody.validateAsync(userInfo);
 
