@@ -8,8 +8,6 @@
 
 # 규칙
 
-코드 한 줄을 쓰더라도 글자 하나하나에 의미가 있어야 한다!!!
-
 ## CI/CD
 
 <details>
@@ -89,16 +87,64 @@ Git Flow라는 전략도 사용해 봤지만 적은 인원으로 이뤄진 프�
 
 참고 사이트: https://www.conventionalcommits.org/ko/v1.0.0-beta.4/#%ea%b0%9c%ec%9a%94
 
-///////////////////////////////////////
-
-## title
-
-<details>
-<summary>Why?</summary>
-<p>
-</p>
-</details>
-
 # 기술 스택
 
-<img src="https://img.shields.io/static/v1?label=&color=3178C6&message=TypeScript&logo=TypeScript&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=339933&message=Node.js&logo=Node.js&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=000000&message=Express&logo=Express&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=%23010101&message=Socket.io&logo=Socket.io&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=%23DC382D&message=Redis&logo=Redis&style=flat-square&logoColor=ffffff"> <img src=""> <img src="https://img.shields.io/static/v1?label=&color=%234479A1&message=MySQL&logo=MySQL&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=%23000000&message=JSON Web Tokens&logo=JSON Web Tokens&style=flat-square&logoColor=ffffff"> <img src="https://img.shields.io/static/v1?label=&color=%235A29E4&message=Axios&logo=Axios&style=flat-square&logoColor=ffffff">
+<details>
+<summary><img src="https://img.shields.io/static/v1?label=&color=339933&message=Node.js&logo=Node.js&style=flat-square&logoColor=ffffff"></summary>
+<h2>What?</h2>
+<p>브라우저가 아닌 환경에서 JavaScript 코드를 실행시키기 위한 런타임 환경</p>
+</details>
+
+<details>
+<summary><img src="https://img.shields.io/static/v1?label=&color=000000&message=Express&logo=Express&style=flat-square&logoColor=ffffff"></summary>
+<h2>What?</h2>
+<p>NodeJS에서 실행되는 HTTP 서버를 쉽고 자유롭게 구성할 수 있는 프레임워크</p>
+</details>
+
+<details>
+<summary><img src="https://img.shields.io/static/v1?label=&color=3178C6&message=TypeScript&logo=TypeScript&style=flat-square&logoColor=ffffff"></summary>
+<h2>What?</h2>
+<p>자바스크립트에 타입을 부여해 엄격한 문법을 기반으로 하는 언어</p>
+<h2>Why?</h2>
+<p>런타임 에러의 사전 방지 및 엄격한 타입 지정을 했기 때문에 가능한 코드 자동 완성으로 인한 생산성 향상을 위해 도입</p>
+</details>
+
+<details>
+<summary><img src="https://img.shields.io/static/v1?label=&color=%23010101&message=Socket.io&logo=Socket.io&style=flat-square&logoColor=ffffff"></summary>
+<h2>What?</h2>
+<p>WebSocket 서비스를 이벤트 기반으로 구현할 수 있게 해주는 라이브러리</p>
+<h2>Why?</h2>
+<p>웹 게임이라는 특성상 실시간 통신을 위한 WebSocket 기술이 필요했고, 이를 익숙한 이벤트 기반으로 쉽게 구현이 가능한 Socket.IO를 사용</p>
+</details>
+
+<details>
+<summary><img src="https://img.shields.io/static/v1?label=&color=%234479A1&message=MySQL&logo=MySQL&style=flat-square&logoColor=ffffff"></summary>
+<h2>What?</h2>
+<p>세계에서 가장 많이 쓰이는 관계형 데이터베이스 관리 시스템</p>
+<h2>Why?</h2>
+<p>굳이 비관계형 데이터베이스를 사용할 이유가 없었고 오랜 기간 많은 사랑을 받다 보니 관련 자료가 많이 있었기 때문에 선택</p>
+</details>
+
+<details>
+<summary><img src="https://img.shields.io/static/v1?label=&color=%23000000&message=JSON Web Tokens&logo=JSON Web Tokens&style=flat-square&logoColor=ffffff"></summary>
+<h2>What?</h2>
+<p></p>
+<h2></h2>
+<p></p>
+</details>
+
+<details>
+<summary><img src="https://img.shields.io/static/v1?label=&color=%235A29E4&message=Axios&logo=Axios&style=flat-square&logoColor=ffffff"></summary>
+<h2>What?</h2>
+<p>기본적인 ajax 통신 이외에도 이에 관련된 다양한 기능을 지원하는 라이브러리</p>
+<h2>Why?</h2>
+<p>카카오 로그인, 서비스간 통신 등을 위한 ajax 라이브러리를 찾던 중 다양한 기능이 있는 axios를 도입</p>
+</details>
+
+<!-- <details>
+<summary><img src=""></summary>
+<h2>What?</h2>
+<p></p>
+<h2>Why?</h2>
+<p></p>
+</details> -->
