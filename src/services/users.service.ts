@@ -10,7 +10,7 @@ export default class UsersService {
   }
 
   async getUserInfo(userId: number) {
-    const user = await this.usersRepository.findOneByKakaoId(userId);
+    const user = await this.usersRepository.findOneByUserId(userId);
 
     if (!user) throw badRequest('인증 정보에 해당하는 사용자가 없습니다.');
 
