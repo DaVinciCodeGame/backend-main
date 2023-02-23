@@ -9,6 +9,7 @@ export async function putObject(body: any, contentType: string) {
     Key: `raw/${name}`,
     Body: body,
     ContentType: contentType,
+    CacheControl: 'max-age=3,600',
   });
 
   return `https://cdn.davinci-code.online/${name}`;
