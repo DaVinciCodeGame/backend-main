@@ -1,6 +1,6 @@
 # 항해 99 실전 프로젝트
 
-(배너)
+![Untitled](https://user-images.githubusercontent.com/44619701/222333562-f47afd2f-1025-4ee9-a44c-414ed00e3156.png)
 
 # 소개
 
