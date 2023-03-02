@@ -6,7 +6,7 @@
 
 다빈치 코드 온라인은 다른 사람들과 함께 보드게임을 즐길 수 있는 웹 서비스입니다.
 
-# 규칙
+# 작업 규칙
 
 ## CI/CD
 
@@ -122,15 +122,7 @@ Git Flow라는 전략도 사용해 봤지만 적은 인원으로 이뤄진 프�
 <h2>What?</h2>
 <p>세계에서 가장 많이 쓰이는 관계형 데이터베이스 관리 시스템</p>
 <h2>Why?</h2>
-<p>굳이 비관계형 데이터베이스를 사용할 이유가 없었고 오랜 기간 많은 사랑을 받다 보니 관련 자료가 많이 있었기 때문에 선택</p>
-</details>
-
-<details>
-<summary><img src="https://img.shields.io/static/v1?label=&color=%23000000&message=JSON Web Tokens&logo=JSON Web Tokens&style=flat-square&logoColor=ffffff"></summary>
-<h2>What?</h2>
-<p></p>
-<h2></h2>
-<p></p>
+<p>정형화된 데이터를 다루기 때문에 NoSQL를 사용할 이유가 없었고 오랜 기간 많은 사랑을 받아 관련 자료가 많이 있었기 때문에 선택</p>
 </details>
 
 <details>
